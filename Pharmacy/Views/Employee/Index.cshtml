@@ -1,0 +1,226 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">کارمندان</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#employeeModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="employeeTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>نام</th>
+                                <th>تخلص</th>
+                                <th>موبایل</th>
+                                <th>ایمیل</th>
+                                <th>آدرس</th>
+                                <th class="text-end">ویرایش</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="employeeModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="employeeModalklHeader">ثبت کارمند</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="employeeForm">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>نام</label>
+                                    <input type="text" name="firstName" class="form-control" placeholder="نام">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تخلص</label>
+                                    <input type="text" name="lastName" class="form-control" placeholder="تخلص">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ تولد</label>
+                                    <input type="text" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>آدرس</label>
+                                    <input type="text" name="address" class="form-control" placeholder="آدرس">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>موبایل</label>
+                                    <input type="text" name="mobile" class="form-control" placeholder="موبایل">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>ایمیل</label>
+                                    <input type="text" name="email" class="form-control" placeholder="ایمیل">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>عکس</label>
+                                    <input type="file" accept="image/*" name="photo" class="form-control" placeholder="عکس">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addEmployee()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="employeeEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش کارمند</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="employeeEditForm">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>نام</label>
+                                    <input type="text" name="firstName" class="form-control" placeholder="نام">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تخلص</label>
+                                    <input type="text" name="lastName" class="form-control" placeholder="تخلص">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ تولد</label>
+                                    <input type="text" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>آدرس</label>
+                                    <input type="text" name="address" class="form-control" placeholder="آدرس">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>موبایل</label>
+                                    <input type="text" name="mobile" class="form-control" placeholder="موبایل">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>ایمیل</label>
+                                    <input type="text" name="email" class="form-control" placeholder="ایمیل">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>عکس</label>
+                                    <input type="file" accept="image/*" name="photo" class="form-control" placeholder="عکس">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateEmployee()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script {
+<script>
+    function addEmployee () {
+        const form = $('#employeeForm');
+        fetchAPI.post("/Employee/AddEmployee", form, () => {
+            $('#employeeModal').modal('hide');
+            form.trigger('reset');
+            k.fnDraw(false);
+        });
+    }
+    const k = $('#employeeTable').dataTable({
+        processing: true,
+        serverSide: true,
+        paging: true,
+        ajax: {
+            url: "/Employee/GetEmployees",
+            type: "GET",
+            dataSrc: "",
+        },
+        columns: [
+            { data: "firstName", name: "firstName" },
+            { data: "lastName", name: "lastName" },
+            { data: "mobile", name: "mobile" },
+            { data: "email", name: "email" },
+            { data: "address", name: "address" },
+            {   
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editEmployee('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteEmployee('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            },
+        ]
+    });
+    console.log(k);
+    function editEmployee (employeeId) {
+
+        $('#employeeEditForm').modal('show');
+
+    }
+    function deleteEmployee (employeeId) {
+        // TODO: Use FetchAPI to Delete
+    }
+    function updateEmployee () {
+        // TODO: Use FetchAPI to Update
+    }
+</script>
+}
