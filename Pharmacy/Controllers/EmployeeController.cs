@@ -12,12 +12,12 @@ namespace WebUI.Controllers {
         public async Task<object> AddEmployee([FromForm] EmployeeModel employee) =>
             await services.EmployeeService.SaveEmployee(employee);
 
-        [HttpGet]
-        public async Task<IEnumerable<Employee>> GetEmployeesAsync(int start, int draw) {
-
-            var a = await services.EmployeeService.GetAllAsync();
+        [HttpPost]
+        public async Task<DataTableResult<Employee>> GetEmployeesAsync(DataTableParams param) {
+            var a = await services.EmployeeService.GetEmployeePage(param);
             return a;
         }
-            
+        [HttpDelete]
+        public async Task<Employee> DeleteEmployee(Guid id) => await services.EmployeeService.SoftDeleteAsync(id, "A");
     }
 }   

@@ -3,11 +3,11 @@ using Domain.Common;
 
 namespace Application.ViewModels {
     public class DataTableResult<T> where T : AuditableEntity {
-        public DataTableResult (IEnumerable<T> _list) {
-            list = _list;
-            rowSize = list.Count();
-        }
-        public IEnumerable<T> list;
-        public int rowSize;
+        public int Draw { get; set; }
+        public int RecordsTotal { get; set; }
+        public int RecordsFiltered { get; set; }
+        public IEnumerable<T> Data { get; set; }
+        public string Error { get; set; }
+        public string PartialView { get; set; }
     }
 }

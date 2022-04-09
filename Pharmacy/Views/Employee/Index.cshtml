@@ -178,6 +178,8 @@
 </div>
 @section Script {
 <script>
+
+
     function addEmployee () {
         const form = $('#employeeForm');
         fetchAPI.post("/Employee/AddEmployee", form, () => {
@@ -186,14 +188,23 @@
             k.fnDraw(false);
         });
     }
+
     const k = $('#employeeTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
         processing: true,
         serverSide: true,
         paging: true,
+        searching: { regex: false },
         ajax: {
             url: "/Employee/GetEmployees",
-            type: "GET",
-            dataSrc: "",
+            type: "POST",
+            //dataSrc: "",
+            //contentType: "application/json",
+            //dataType: "json",
+            //data: function (d) {
+            //    return d;
+            //}
         },
         columns: [
             { data: "firstName", name: "firstName" },
@@ -210,15 +221,20 @@
             },
         ]
     });
-    console.log(k);
     function editEmployee (employeeId) {
 
         $('#employeeEditForm').modal('show');
 
     }
-    function deleteEmployee (employeeId) {
-        // TODO: Use FetchAPI to Delete
-    }
+    deleteEmployee = (employeeId) => alertify.confirm("حذف کارمند", "میخواهد حذف شود؟", () => {
+        console.log(employeeId);
+        fetchAPI.delete("/Employee/DeleteEmployee", employeeId, () => k.fnDraw(false));
+        alertify.success("حذف شد");
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+
+        
     function updateEmployee () {
         // TODO: Use FetchAPI to Update
     }

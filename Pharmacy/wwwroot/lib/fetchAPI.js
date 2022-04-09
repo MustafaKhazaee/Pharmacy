@@ -1,5 +1,17 @@
 ﻿class FetchAPI {
 
+    async delete(url, id, callBack) {
+        url = url + `?id=${id}`;
+        await fetch(url, {
+            method: "DELETE",
+        }).then(response => {
+            if (response.status == 200) {
+                callBack.call();
+            }
+            return response.json();
+        }).then(data => data).catch(error => console.error(error));
+    }
+
    async post(url, form, callBack) {
         const data = await this.getFormDataFromForm(form);
         await fetch(url, {

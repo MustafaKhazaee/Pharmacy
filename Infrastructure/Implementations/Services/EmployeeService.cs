@@ -24,8 +24,17 @@ namespace Infrastructure.Implementations.Services {
             return (Employee) await AddAsync(employee);
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployeePage(string firstName, string lastName, string email, string mobile, int pageIndex, int pageSize) =>
-            await FindAllAsync(e => e.FirstName.Contains(firstName) || e.LastName.Contains(lastName) ||
-                e.Email.Contains(email) || e.Mobile.Contains(mobile), pageIndex, pageSize);
+        public async Task<DataTableResult<Employee>> GetEmployeePage(DataTableParams param) {
+            string searchKey = param.Search.Value;
+            int start = param.Start, length = param.Length, all = await CountAsync();
+            IEnumerable<Employee> list = await FindAllAsync(e => (e.FirstName.Contains(searchKey) || e.LastName.Contains(searchKey) ||
+                    e.Mobile.Contains(searchKey) || searchKey == null) && !e.IsDeleted, start, length);
+            return new DataTableResult<Employee> {
+                Data = list,
+                RecordsFiltered = list.Count(),
+                RecordsTotal = all,
+                Draw = param.Draw
+            };
+        }
     }
 }

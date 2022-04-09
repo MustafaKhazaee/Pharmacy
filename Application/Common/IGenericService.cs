@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 namespace Application.Common {
     public interface IGenericService<T> where T : AuditableEntity {
-        public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int pageIndex, int pageSize);
+        public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int start, int length);
         public Task<T> FindAsync(Guid Id);
         public Task<T> FindAsync(Expression<Func<T, bool>> predicate);
         public Task<IEnumerable<T>> GetAllAsync();

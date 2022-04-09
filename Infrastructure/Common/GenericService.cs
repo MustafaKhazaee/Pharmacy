@@ -22,7 +22,7 @@ namespace Infrastructure.Common {
             await context.Set<T>().AddRangeAsync(entities);
             await context.SaveChangesAsync();
         }
-        public async Task<int> CountAsync() => await Task.FromResult(context.Set<T>().Count());
+        public async Task<int> CountAsync() => await Task.FromResult(context.Set<T>().Count(t => !t.IsDeleted));
         public async Task<T> FindAsync(Guid Id) => await context.Set<T>().FindAsync(Id);
         public async Task<IEnumerable<T>> GetAllAsync() => await Task.FromResult(context.Set<T>().ToList());
         public async Task RemoveAsync(Guid Id) {
@@ -38,8 +38,8 @@ namespace Infrastructure.Common {
             await context.SaveChangesAsync();
             return a;
         }
-        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int pageIndex, int pageSize) => 
-            await Task.FromResult(context.Set<T>().Where(predicate).Skip(pageIndex * pageSize).Take(pageSize));
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int start, int length) => 
+            await Task.FromResult(context.Set<T>().Where(predicate).Skip(start).Take(length).OrderByDescending(t => t.CreatedDate).ToList());
         public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => await context.Set<T>().FindAsync(predicate);
         #endregion
 
