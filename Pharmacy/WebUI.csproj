@@ -5,17 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="wwwroot\images\original\**" />
-    <Compile Remove="wwwroot\images\small\**" />
-    <Content Remove="wwwroot\images\original\**" />
-    <Content Remove="wwwroot\images\small\**" />
-    <EmbeddedResource Remove="wwwroot\images\original\**" />
-    <EmbeddedResource Remove="wwwroot\images\small\**" />
-    <None Remove="wwwroot\images\original\**" />
-    <None Remove="wwwroot\images\small\**" />
-  </ItemGroup>
 		
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />

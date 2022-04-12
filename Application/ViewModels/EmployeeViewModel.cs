@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.ViewModels {
     public class EmployeeModel {
-        public Guid? id { get; set; }
+        public Guid id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }

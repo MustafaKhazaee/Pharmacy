@@ -6,7 +6,9 @@ namespace WebUI.Controllers {
     [Authorize]
     public class BaseController : Controller {
         protected readonly IApplicationServices services;
-        public BaseController (IApplicationServices applicationServices) => services = applicationServices;
+        public BaseController (IApplicationServices applicationServices) {
+            services = applicationServices;
+        }
     }
 }
             

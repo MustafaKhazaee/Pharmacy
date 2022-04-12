@@ -9,21 +9,25 @@ namespace WebUI.Controllers {
         public async Task<IActionResult> Index() => await Task.FromResult(View());
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<Employee> AddEmployee([FromForm] EmployeeModel employee) =>
             await services.EmployeeService.SaveEmployee(employee);
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<DataTableResult<Employee>> GetEmployeesAsync(DataTableParams param) =>
             await services.EmployeeService.GetEmployeePage(param);
 
         [HttpDelete]
-        public async Task<Employee> DeleteEmployee(Guid id) => await services.EmployeeService.SoftDeleteAsync(id, "A");
+        [ValidateAntiForgeryToken]
+        public async Task<Employee> DeleteEmployee(Guid id) => await services.EmployeeService.SoftDeleteAsync(id);
 
         [HttpGet]
         public async Task<IActionResult> GetUpdateModal (Guid id) => 
             await Task.FromResult(PartialView("UpdateEmployee", await services.EmployeeService.FindAsync(id)));
 
         [HttpPut]
+        [ValidateAntiForgeryToken]
         public async Task<Employee> UpdateEmployee([FromForm] EmployeeModel employee) =>
             await services.EmployeeService.UpdateEmployee(employee);
     }

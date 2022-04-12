@@ -11,6 +11,7 @@ namespace WebUI {
             services.AddInfrastructure();
             services.AddCookieAuthentication();
             services.AddHttpContextAccessor();
+            services.AddAntiforgery(a => a.HeaderName = "pharmacyapp-anti-forgery-token");
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {

@@ -1,24 +1,32 @@
 ﻿using Application.Common;
 using Domain.Common;
+using Microsoft.AspNetCore.Http;
 using Persistence;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Common {
     public class GenericService<T> : IGenericService<T> where T : AuditableEntity {
         private readonly ApplicationDbContext context;
         protected readonly IUnitOfWork unitOfWork;
-        public GenericService(ApplicationDbContext applicationDbContext) {
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public GenericService(ApplicationDbContext applicationDbContext, IHttpContextAccessor httpContextAccessor) {
             this.context = applicationDbContext;
             this.unitOfWork = new UnitOfWork(this.context);
+            this.httpContextAccessor = httpContextAccessor;
         }
         #region Common CRUD Operation :
         public async Task<object> AddAsync(T entity) {
+            entity.CreatedDate = DateTime.Now;
+            entity.CreatedBy = httpContextAccessor.HttpContext.User.Identity.Name;
             await context.Set<T>().AddAsync(entity);
             await context.SaveChangesAsync();
             return entity;
         }
         public async Task AddRangeAsync(IEnumerable<T> entities) {
+            foreach (var entity in entities) {
+                entity.CreatedDate = DateTime.UtcNow;
+                entity.CreatedBy = httpContextAccessor.HttpContext.User.Identity.Name;
+            }
             await context.Set<T>().AddRangeAsync(entities);
             await context.SaveChangesAsync();
         }
@@ -34,6 +42,8 @@ namespace Infrastructure.Common {
             await context.SaveChangesAsync();
         }
         public async Task<object> UpdateAsync(T entity) {
+            entity.LastModifiedBy = httpContextAccessor.HttpContext.User.Identity.Name;
+            entity.LastModifiedDate = DateTime.UtcNow;
             await Task.FromResult(context.Update(entity));
             await context.SaveChangesAsync();
             return entity;
@@ -45,21 +55,21 @@ namespace Infrastructure.Common {
         #endregion
 
         #region AuditableEntity Operations :
-        public async Task<T> SoftDeleteAsync(Guid Id, string DeleteBy) {
+        public async Task<T> SoftDeleteAsync(Guid Id) {
             T auditableEntiy = await context.Set<T>().FindAsync(Id);
             auditableEntiy.IsDeleted = true;
             auditableEntiy.DeletedDate = DateTime.UtcNow;
-            auditableEntiy.DeletedBy = DeleteBy;
+            auditableEntiy.DeletedBy = this.httpContextAccessor.HttpContext.User.Identity.Name;
             await context.SaveChangesAsync();
             return auditableEntiy;
         }
-        public async Task<T> ModifyAsync(Guid Id, string ModifiedBy) {
-            T auditableEntiy = await context.Set<T>().FindAsync(Id);
-            auditableEntiy.LastModifiedDate = DateTime.UtcNow;
-            auditableEntiy.LastModifiedBy = ModifiedBy;
-            await context.SaveChangesAsync();
-            return auditableEntiy;
-        }
+        //public async Task<T> ModifyAsync(Guid Id) {
+        //    T auditableEntiy = await context.Set<T>().FindAsync(Id);
+        //    auditableEntiy.LastModifiedDate = DateTime.UtcNow;
+        //    auditableEntiy.LastModifiedBy = httpContextAccessor.HttpContext.User.Identity.Name;
+        //    await context.SaveChangesAsync();
+        //    return auditableEntiy;
+        //}
         #endregion
     }
 }

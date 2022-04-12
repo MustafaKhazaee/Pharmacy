@@ -8,13 +8,13 @@ using Persistence;
 namespace Infrastructure.Common {
     public class ApplicationServices : IApplicationServices {
         public ApplicationServices (ApplicationDbContext context, IHttpContextAccessor a) {
-            BuyService = new BuyService (context);
-            CompanyService = new CompanyService(context);
-            CustomerService = new CustomerService(context);
-            EmployeeService = new EmployeeService(context);
-            MedicineService = new MedicineService(context);
-            SalaryService = new SalaryService(context);
-            SellService = new SellService(context);
+            BuyService = new BuyService (context, a);
+            CompanyService = new CompanyService(context, a);
+            CustomerService = new CustomerService(context, a);
+            EmployeeService = new EmployeeService(context, a);
+            MedicineService = new MedicineService(context, a);
+            SalaryService = new SalaryService(context, a);
+            SellService = new SellService(context, a);
             UserService = new UserService(context, a);
             PictureService = new PictureService();
         }

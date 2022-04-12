@@ -18,8 +18,10 @@
                     <table id="employeeTable" class="table table-center table-hover table-responsive-sm table-stripped">
                         <thead class="thead-light">
                             <tr>
+                                <th>عکس</th>
                                 <th>نام</th>
                                 <th>تخلص</th>
+                                <th>تاریخ تولد</th>
                                 <th>موبایل</th>
                                 <th>ایمیل</th>
                                 <th>آدرس</th>
@@ -52,19 +54,23 @@
                             <div class="col-lg-6 col-md-6">
                                 <div class="form-group">
                                     <label>نام</label>
-                                    <input type="text" name="firstName" class="form-control" placeholder="نام">
+                                    <input required id="addFirstName" type="text" name="firstName" class="form-control" placeholder="نام">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">نام نمیتواند خالی باشد!</div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="form-group">
                                     <label>تخلص</label>
-                                    <input type="text" name="lastName" class="form-control" placeholder="تخلص">
+                                    <input required id="addLastName" type="text" name="lastName" class="form-control" placeholder="تخلص">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تخلص نمیتواند خالی باشد!</div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="form-group">
                                     <label>تاریخ تولد</label>
-                                    <input type="text" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
+                                    <input type="date" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
@@ -134,15 +140,21 @@
 </div>
 @section Script {
 <script>
-
-
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
     function addEmployee () {
         const form = document.querySelector('form[id="employeeForm"]');
-        fetchAPI.post("/Employee/AddEmployee", form, () => {
-            $('#employeeModal').modal('hide');
-            form.reset();
-            k.fnDraw(false);
-        });
+        const firstName = document.querySelector('input[id="addFirstName"]').value;
+        const lastName = document.querySelector('input[id="addLastName"]').value;
+        if (!firstName || !lastName) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.post("/Employee/AddEmployee", form, forgeryToken, () => {
+                $('#employeeModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
     }
 
     const k = $('#employeeTable').dataTable({
@@ -155,16 +167,31 @@
         ajax: {
             url: "/Employee/GetEmployees",
             type: "POST",
-            //dataSrc: "",
-            //contentType: "application/json",
-            //dataType: "json",
-            //data: function (d) {
-            //    return d;
-            //}
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
         },
         columns: [
+            { 
+                data: "photoResized",
+                render: function (data, type, row) {
+                    if (data) {
+                        const b = row.photo.substring(row.photo.indexOf("\images"));
+                        const a = data.substring(data.indexOf("\images"));
+                        return `<a href="${b}" target="blank"><img class="my-photo-class" src="${a}" /></a>`;
+                    }
+                    return '<img class="my-photo-class" src="\\images\\default.png" />';
+                }            
+            },
             { data: "firstName", name: "firstName" },
             { data: "lastName", name: "lastName" },
+            { 
+                data: "dateOfBirth",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
             { data: "mobile", name: "mobile" },
             { data: "email", name: "email" },
             { data: "address", name: "address" },
@@ -177,28 +204,37 @@
             },
         ]
     });
+
     async function editEmployee (employeeId) {
         const d = await fetchAPI.getUpdateModal("/Employee/GetUpdateModal", employeeId, () => {
             $('#employeeEditModal').modal('show');
         });
         document.querySelector('form[id="employeeEditForm"]').innerHTML = d;
     }
+
     deleteEmployee = (employeeId) => alertify.confirm("حذف کارمند", "میخواهد حذف شود؟", () => {
-        console.log(employeeId);
-        fetchAPI.delete("/Employee/DeleteEmployee", employeeId, () => k.fnDraw(false));
-        alertify.success("حذف شد");
+        fetchAPI.delete("/Employee/DeleteEmployee", employeeId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
     }, () => {
         alertify.error("عملیات متوقف شد");
     });
-
-        
-    function updateEmployee () {
+    
+    async function updateEmployee () {
         const form = document.querySelector('form[id="employeeEditForm"]');
-        fetchAPI.put("/Employee/UpdateEmployee", form, () => {
-            $('#employeeEditModal').modal('hide');
-            form.reset();
-            k.fnDraw(false);
-        });
+        const firstName = document.querySelector('input[id="updateFirstname"]').value;
+        const lastName =  document.querySelector('input[id="updateLastname"]').value;
+        if (!firstName || !lastName) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            await fetchAPI.put("/Employee/UpdateEmployee", form, forgeryToken, () => {
+                $('#employeeEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("تغیرات اعمال شد");
+            });
+        }
     }
 </script>
 }

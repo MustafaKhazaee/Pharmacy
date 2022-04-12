@@ -55,6 +55,7 @@
             </div>
         </div>
     </div>
+    @Html.AntiForgeryToken()
     <script src="~/assets/js/jquery-3.6.0.min.js"></script>
     <script src="~/assets/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/feather.min.js"></script>
@@ -62,6 +63,7 @@
     <script src="~/assets/js/script.js"></script>
     <script src="~/lib/fetchAPI.js"></script>
     <script>
+        var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
         document.querySelector('ul[class="sticky-sidebar siderbar-view"]').hidden = true;
         var fetchAPI = new FetchAPI();
         async function loginUser () {
@@ -73,7 +75,7 @@
                 form.setAttribute('class', 'was-validated');
             else {
                 alertify.success("ارسال درخواست . . .");
-                const a = await fetchAPI.post("/AdminPanel/Login", form, () => {
+                const a = await fetchAPI.post("/AdminPanel/Login", form, forgeryToken, () => {
                 });
                 if (a) {
                     alertify.success("کاربر موفقانه احراز هویت گردید");

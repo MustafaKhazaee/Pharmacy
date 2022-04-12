@@ -1,5 +1,13 @@
 ﻿class FetchAPI {
 
+    async get(url) {
+        return await fetch(url, {
+            method: "get",
+        })
+        .then(response => response.text())
+        .then(data => data).catch(error => console.error(error));
+    }
+
     async getUpdateModal(url, id, callBack) {
         url = url + `?id=${id}`;
         return await fetch(url, {
@@ -12,11 +20,14 @@
         }).then(data => data).catch(error => console.error(error));
     }
 
-    async put(url, form, callBack) {
+    async put(url, form, forgeryToken, callBack) {
         const data = await this.getFormDataFromForm(form);
         return await fetch(url, {
             method: "put",
             body: data,
+            headers: {
+                "PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken
+            }
         }).then(response => {
             if (response.status == 200) {
                 callBack.call();
@@ -25,11 +36,14 @@
         }).then(data => data).catch(error => console.error(error));
     }
 
-    async post(url, form, callBack) {
+    async post(url, form, forgeryToken, callBack) {
         const data = await this.getFormDataFromForm(form);
         return await fetch(url, {
             method: "post",
             body: data,
+            headers: {
+                "PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken
+            }
         }).then(response => {
             if (response.status == 200) {
                 callBack.call();
@@ -42,7 +56,7 @@
         const a = new FormData();
         for (let i = 0; i < form.length; i++) {
             const input = form[i];
-            if (input.type.toString() === 'text' || input.type.toString() === 'password') {
+            if (input.type.toString() === 'text' || input.type.toString() === 'password' || input.type.toString() === 'date') {
                 a.append(input.name, input.value);
             } else if (input.type.toString() === 'file') {
                 a.append(input.name, input.files[0]);
@@ -53,10 +67,13 @@
         return a;
     }
 
-    async delete(url, id, callBack) {
+    async delete(url, id, forgeryToken, callBack) {
         url = url + `?id=${id}`;
         await fetch(url, {
             method: "DELETE",
+            headers: {
+                "PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken
+            }
         }).then(response => {
             if (response.status == 200) {
                 callBack.call();
@@ -65,13 +82,3 @@
         }).then(data => data).catch(error => console.error(error));
     }
 }
-
-
- //async getJSONFromForm(form) {
- //    const a = {};
- //    for (let i = 0; i < form[0].length; i++) {
- //        const input = form[0][i];
- //        a[input.name] = input.value;
- //    }
- //    return a;
- //}

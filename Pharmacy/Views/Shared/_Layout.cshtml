@@ -13,8 +13,26 @@
     <link rel="stylesheet" href="~/assets/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="~/assets/plugins/alertify/alertify.min.css">
     <link rel="stylesheet" href="~/assets/css/style.css">
+    <style>
+        /* Global Styles Defined Here */
+        td {
+            padding: 2px !important;
+        }
+        .my-photo-class {
+            width: 50px;
+            height: 50px;
+            border: 1px black solid;
+            border-radius: 25px;
+            transition-duration: 1s;
+            cursor: pointer;
+        }
+        .my-photo-class:hover {
+            transform: scale(1.8);
+        }
+    </style>
 </head>
 <body class="nk-body bg-lighter npc-default has-sidebar no-touch nk-nio-theme">
+    @Html.AntiForgeryToken()
     <div class="main-wrapper">
         @{
             await Html.RenderPartialAsync("Topbar.cshtml");
@@ -43,6 +61,17 @@
     <script>
         document.querySelector('ul[class="sticky-sidebar siderbar-view"]').hidden = true;
         const fetchAPI = new FetchAPI();
+        async function getUserName () {
+            const username = await fetchAPI.get("/AdminPanel/GetUserName/");
+            document.querySelector('span[id="usernameSpan"]').innerHTML = username;
+        }
+        getUserName();
+        async function logoutUser () {
+            const result = await fetchAPI.get("/AdminPanel/Logout/");
+            if (result) {
+                window.location.href = "/AdminPanel/LoginPage";
+            }
+        }
     </script>
     @await RenderSectionAsync("Script", false)
 </body>

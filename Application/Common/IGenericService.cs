@@ -9,8 +9,8 @@ namespace Application.Common {
         public Task<object> AddAsync(T entity);
         public Task AddRangeAsync(IEnumerable<T> entities);
         public Task RemoveAsync(Guid Id);
-        public Task<T> SoftDeleteAsync(Guid Id, string DeleteBy);
-        public Task<T> ModifyAsync(Guid Id, string ModifiedBy);
+        public Task<T> SoftDeleteAsync(Guid Id);
+        //public Task<T> ModifyAsync(Guid Id);
         public Task RemoveRangeAsync(IEnumerable<T> entities);
         public Task<int> CountAsync();
         public Task<object> UpdateAsync(T entity);

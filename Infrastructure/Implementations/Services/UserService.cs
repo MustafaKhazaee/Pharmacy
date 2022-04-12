@@ -13,7 +13,7 @@ using System.Security.Claims;
 namespace Infrastructure.Implementations.Services {
     public class UserService : GenericService<User>, IUserService {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserService(ApplicationDbContext applicationDbContext, IHttpContextAccessor httpContextAccessor) : base(applicationDbContext) {
+        public UserService(ApplicationDbContext applicationDbContext, IHttpContextAccessor httpContextAccessor) : base(applicationDbContext, httpContextAccessor) {
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -42,7 +42,9 @@ namespace Infrastructure.Implementations.Services {
             return false;
         }
 
-        public async Task LogoutUser(HttpContext httpContext) => 
-            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        public async Task<bool> LogoutUser () {
+            await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return true;
+        }
     }
 }

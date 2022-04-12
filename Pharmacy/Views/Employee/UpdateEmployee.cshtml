@@ -1,22 +1,33 @@
 ﻿@model Domain.Entities.Employee
+@{
+    string a = "";
+    if (Model.DateOfBirth != null) {
+        DateTime t = (DateTime) Model.DateOfBirth;
+        a = t.ToString("yyy-MM-dd");
+    }
+}
 <div class="row">
      <input value="@Model.Id" id="updateid" hidden type="text" name="id" class="form-control" placeholder="نام">
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label>نام</label>
-            <input value="@Model.FirstName" id="updateFirstname" type="text" name="firstName" class="form-control" placeholder="نام">
+            <input required value="@Model.FirstName" id="updateFirstname" type="text" name="firstName" class="form-control" placeholder="نام">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">نام نمیتواند خالی باشد!</div>
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label>تخلص</label>
-            <input value="@Model.LastName" id="updateLastname" type="text" name="lastName" class="form-control" placeholder="تخلص">
+            <input required value="@Model.LastName" id="updateLastname" type="text" name="lastName" class="form-control" placeholder="تخلص">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تخلص نمیتواند خالی باشد!</div>
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
         <div class="form-group">
             <label>تاریخ تولد</label>
-            <input value="@Model.DateOfBirth" id="updateDateOfBirth" type="text" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
+            <input value="@a" id="updateDateOfBirth" type="date" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
         </div>
     </div>
     <div class="col-lg-6 col-md-6">
