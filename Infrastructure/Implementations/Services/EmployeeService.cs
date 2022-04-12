@@ -18,10 +18,28 @@ namespace Infrastructure.Implementations.Services {
                 Address = employeeModel.Address,
                 Mobile = employeeModel.Mobile,
                 Email = employeeModel.Email,
+                DateOfBirth = employeeModel.DateOfBirth,
                 Photo = ph != null ? ph[0] : null,
                 PhotoResized = ph != null ? ph[1] : null
             };
             return (Employee) await AddAsync(employee);
+        }
+        
+        public async Task<Employee> UpdateEmployee(EmployeeModel employeeModel) {
+            PictureService pictureService = new PictureService();
+            string[] ph = pictureService.SaveAndResizePicture(employeeModel.Photo, 100, 100);
+            Employee employee = new Employee {
+                Id = (Guid) employeeModel.id,
+                FirstName = employeeModel.FirstName,
+                LastName = employeeModel.LastName,
+                Address = employeeModel.Address,
+                Mobile = employeeModel.Mobile,
+                Email = employeeModel.Email,
+                DateOfBirth = employeeModel.DateOfBirth,
+                Photo = ph != null ? ph[0] : null,
+                PhotoResized = ph != null ? ph[1] : null
+            };
+            return (Employee) await UpdateAsync(employee);
         }
 
         public async Task<DataTableResult<Employee>> GetEmployeePage(DataTableParams param) {

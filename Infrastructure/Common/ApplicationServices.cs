@@ -2,11 +2,12 @@
 using Application.Common;
 using Application.Interfaces.Services;
 using Infrastructure.Implementations.Services;
+using Microsoft.AspNetCore.Http;
 using Persistence;
 
 namespace Infrastructure.Common {
     public class ApplicationServices : IApplicationServices {
-        public ApplicationServices (ApplicationDbContext context) {
+        public ApplicationServices (ApplicationDbContext context, IHttpContextAccessor a) {
             BuyService = new BuyService (context);
             CompanyService = new CompanyService(context);
             CustomerService = new CustomerService(context);
@@ -14,7 +15,7 @@ namespace Infrastructure.Common {
             MedicineService = new MedicineService(context);
             SalaryService = new SalaryService(context);
             SellService = new SellService(context);
-            UserService = new UserService(context);
+            UserService = new UserService(context, a);
             PictureService = new PictureService();
         }
 

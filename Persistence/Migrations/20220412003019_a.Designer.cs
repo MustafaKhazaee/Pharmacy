@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220408072826_b")]
-    partial class b
+    [Migration("20220412003019_a")]
+    partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -182,7 +182,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
@@ -215,6 +215,9 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoResized")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -443,15 +446,15 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("75e0b482-4272-4adf-80f7-56a455936899"),
+                            Id = new Guid("52df5389-d0f8-4362-9c53-c243965157b1"),
                             CreatedBy = "A",
-                            CreatedDate = new DateTime(2022, 4, 8, 7, 28, 25, 167, DateTimeKind.Utc).AddTicks(2679),
+                            CreatedDate = new DateTime(2022, 4, 12, 0, 30, 18, 154, DateTimeKind.Utc).AddTicks(9216),
                             Email = "mustafa.khazaee1@gmail.com",
                             IsDeleted = false,
                             IsLocked = false,
-                            Password = "f5e1e1ed8984fd084565ba5a232093b8febe8039ab3afb6ac6b7d2ee9e26136f",
+                            Password = "04b82442e1b2be98056d6e6c11f096720396e1264199ed517b914462a8df4b53",
                             Role = 0,
-                            Salt = "fde62bb06a4deea329d4aa6b319b2cc4",
+                            Salt = "3b866a48729a2e21357b6ed6fbff38b5",
                             UserName = "mustafa"
                         });
                 });

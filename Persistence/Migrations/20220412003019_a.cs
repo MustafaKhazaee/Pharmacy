@@ -59,11 +59,12 @@ namespace Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mobile2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoResized = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -222,7 +223,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsDeleted", "IsLocked", "LastModifiedBy", "LastModifiedDate", "Password", "Role", "Salt", "UserName" },
-                values: new object[] { new Guid("2d287c0c-1684-42af-b403-298d06b57509"), "A", new DateTime(2022, 4, 7, 12, 38, 17, 243, DateTimeKind.Utc).AddTicks(5983), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "08b90fecfc7fc25ab983647a85cdd4d20beee6cdf40a74edf8a3367586f5a921", 0, "492460a881ced1b7609e567f97ac0fdd", "Mustafa" });
+                values: new object[] { new Guid("52df5389-d0f8-4362-9c53-c243965157b1"), "A", new DateTime(2022, 4, 12, 0, 30, 18, 154, DateTimeKind.Utc).AddTicks(9216), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "04b82442e1b2be98056d6e6c11f096720396e1264199ed517b914462a8df4b53", 0, "3b866a48729a2e21357b6ed6fbff38b5", "mustafa" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buys_MedicineId",

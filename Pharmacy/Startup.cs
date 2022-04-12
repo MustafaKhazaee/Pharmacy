@@ -1,3 +1,4 @@
+using Application.Extensions;
 using Infrastructure;
 using Persistence;
 namespace WebUI {
@@ -8,6 +9,8 @@ namespace WebUI {
             services.AddPersistence(Configuration);
             services.AddControllersWithViews();
             services.AddInfrastructure();
+            services.AddCookieAuthentication();
+            services.AddHttpContextAccessor();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
@@ -19,6 +22,7 @@ namespace WebUI {
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(

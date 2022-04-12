@@ -34,13 +34,14 @@ namespace Infrastructure.Common {
             await context.SaveChangesAsync();
         }
         public async Task<object> UpdateAsync(T entity) {
-            Object a = await Task.FromResult(context.Update(entity));
+            await Task.FromResult(context.Update(entity));
             await context.SaveChangesAsync();
-            return a;
+            return entity;
         }
         public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int start, int length) => 
             await Task.FromResult(context.Set<T>().Where(predicate).Skip(start).Take(length).OrderByDescending(t => t.CreatedDate).ToList());
-        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => await context.Set<T>().FindAsync(predicate);
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate) => 
+            await Task.FromResult(context.Set<T>().Where(predicate).FirstOrDefault());
         #endregion
 
         #region AuditableEntity Operations :

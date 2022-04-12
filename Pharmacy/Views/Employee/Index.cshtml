@@ -23,7 +23,7 @@
                                 <th>موبایل</th>
                                 <th>ایمیل</th>
                                 <th>آدرس</th>
-                                <th class="text-end">ویرایش</th>
+                                <th >ویرایش</th>
                             </tr>
                         </thead>
                         <tbody >
@@ -119,50 +119,6 @@
             <div class="modal-body">
                 <div class="bank-inner-details">
                     <form id="employeeEditForm">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>نام</label>
-                                    <input type="text" name="firstName" class="form-control" placeholder="نام">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>تخلص</label>
-                                    <input type="text" name="lastName" class="form-control" placeholder="تخلص">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>تاریخ تولد</label>
-                                    <input type="text" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>آدرس</label>
-                                    <input type="text" name="address" class="form-control" placeholder="آدرس">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>موبایل</label>
-                                    <input type="text" name="mobile" class="form-control" placeholder="موبایل">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>ایمیل</label>
-                                    <input type="text" name="email" class="form-control" placeholder="ایمیل">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="form-group">
-                                    <label>عکس</label>
-                                    <input type="file" accept="image/*" name="photo" class="form-control" placeholder="عکس">
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -170,7 +126,7 @@
                 <div class="bank-details-btn">
                     <a href="javascript:void(0);" data-bs-dismiss="modal"
                         class="btn btn-warning">بستن</a>
-                    <a onclick="updateEmployee()" class="btn btn-primary">ثبت</a>
+                    <a onclick="updateEmployee()" class="btn btn-primary">اعمال تغیرات</a>
                 </div>
             </div>
         </div>
@@ -181,10 +137,10 @@
 
 
     function addEmployee () {
-        const form = $('#employeeForm');
+        const form = document.querySelector('form[id="employeeForm"]');
         fetchAPI.post("/Employee/AddEmployee", form, () => {
             $('#employeeModal').modal('hide');
-            form.trigger('reset');
+            form.reset();
             k.fnDraw(false);
         });
     }
@@ -221,10 +177,11 @@
             },
         ]
     });
-    function editEmployee (employeeId) {
-
-        $('#employeeEditForm').modal('show');
-
+    async function editEmployee (employeeId) {
+        const d = await fetchAPI.getUpdateModal("/Employee/GetUpdateModal", employeeId, () => {
+            $('#employeeEditModal').modal('show');
+        });
+        document.querySelector('form[id="employeeEditForm"]').innerHTML = d;
     }
     deleteEmployee = (employeeId) => alertify.confirm("حذف کارمند", "میخواهد حذف شود؟", () => {
         console.log(employeeId);
@@ -236,7 +193,12 @@
 
         
     function updateEmployee () {
-        // TODO: Use FetchAPI to Update
+        const form = document.querySelector('form[id="employeeEditForm"]');
+        fetchAPI.put("/Employee/UpdateEmployee", form, () => {
+            $('#employeeEditModal').modal('hide');
+            form.reset();
+            k.fnDraw(false);
+        });
     }
 </script>
 }

@@ -180,7 +180,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
@@ -444,15 +444,15 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5bacff71-c9f9-42f3-9d35-ec0b97aded0c"),
+                            Id = new Guid("52df5389-d0f8-4362-9c53-c243965157b1"),
                             CreatedBy = "A",
-                            CreatedDate = new DateTime(2022, 4, 8, 11, 48, 43, 459, DateTimeKind.Utc).AddTicks(1428),
+                            CreatedDate = new DateTime(2022, 4, 12, 0, 30, 18, 154, DateTimeKind.Utc).AddTicks(9216),
                             Email = "mustafa.khazaee1@gmail.com",
                             IsDeleted = false,
                             IsLocked = false,
-                            Password = "f23baa9e8be648bda570198617d01d0151d84e91e519327b9f32e4d55f9f23ce",
+                            Password = "04b82442e1b2be98056d6e6c11f096720396e1264199ed517b914462a8df4b53",
                             Role = 0,
-                            Salt = "b3fdbfd2006252ee7628a687f0f81740",
+                            Salt = "3b866a48729a2e21357b6ed6fbff38b5",
                             UserName = "mustafa"
                         });
                 });

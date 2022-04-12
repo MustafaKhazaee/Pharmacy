@@ -1,4 +1,6 @@
 ﻿using Application.Common;
+using Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers {
@@ -7,6 +9,10 @@ namespace WebUI.Controllers {
         public async Task<IActionResult> Index () => await Task.FromResult(View());
         public async Task<IActionResult> Table () => await Task.FromResult(View());
         public async Task<IActionResult> Popup () =>  await Task.FromResult(View());
-        public async Task<IActionResult> Login () =>  await Task.FromResult(View());
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginPage () =>  await Task.FromResult(View());
+        [AllowAnonymous]
+        public async Task<bool> Login ([FromForm] LoginModel loginModel) => await services.UserService.LoginUser(loginModel);
+
     }
 }
