@@ -63,8 +63,8 @@
     <script src="~/assets/js/script.js"></script>
     <script src="~/lib/fetchAPI.js"></script>
     <script>
-        var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
         document.querySelector('ul[class="sticky-sidebar siderbar-view"]').hidden = true;
+        var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
         var fetchAPI = new FetchAPI();
         async function loginUser () {
             const username = document.querySelector('input[id="userNameInput"]').value;
@@ -81,7 +81,6 @@
                     alertify.success("کاربر موفقانه احراز هویت گردید");
                     setTimeout(() => window.location.href = "/AdminPanel/Index", 2000);
                 } else {
-                    console.log(a);
                     alertify.error("نام کاربری یا رمز عبور اشتباه است.");
                 }
             }

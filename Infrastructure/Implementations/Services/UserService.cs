@@ -27,7 +27,8 @@ namespace Infrastructure.Implementations.Services {
             }
             if ($"{password}{user.Salt}".GetHash().Equals(user.Password)) {
                 List<Claim> claims = new List<Claim> {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim(ClaimTypes.Name, $"{user.firstName} {user.lastName}"),
+                    new Claim(ClaimTypes.Role, $"{user.Role}")
                 };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 AuthenticationProperties authenticationProperties = new AuthenticationProperties {

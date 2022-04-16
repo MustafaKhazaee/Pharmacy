@@ -11,6 +11,7 @@ namespace Application.Common {
         public ISalaryService SalaryService { get; set; }
         public ISellService SellService { get; set; }
         public IUserService UserService { get; set; }
+        public ITransactionService TransactionService { get; set; }
         public IPictureService PictureService { get; set; }
     }
 }

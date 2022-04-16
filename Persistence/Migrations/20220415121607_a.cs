@@ -15,7 +15,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -37,6 +37,7 @@ namespace Persistence.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mobile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DateOfJoining = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -86,12 +87,15 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ManufacturingCompany = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Count = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ManufacturingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     BuyPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SellProfitPercent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotoResized = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -111,6 +115,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -222,8 +228,8 @@ namespace Persistence.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsDeleted", "IsLocked", "LastModifiedBy", "LastModifiedDate", "Password", "Role", "Salt", "UserName" },
-                values: new object[] { new Guid("52df5389-d0f8-4362-9c53-c243965157b1"), "A", new DateTime(2022, 4, 12, 0, 30, 18, 154, DateTimeKind.Utc).AddTicks(9216), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "04b82442e1b2be98056d6e6c11f096720396e1264199ed517b914462a8df4b53", 0, "3b866a48729a2e21357b6ed6fbff38b5", "mustafa" });
+                columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsDeleted", "IsLocked", "LastModifiedBy", "LastModifiedDate", "Password", "Role", "Salt", "UserName", "firstName", "lastName" },
+                values: new object[] { new Guid("f9000847-6281-41cc-991b-85059886e74d"), "A", new DateTime(2022, 4, 15, 16, 46, 5, 671, DateTimeKind.Local).AddTicks(5322), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "5092dae6327c851d502ec1d804f5d502d1d5246377b3ce869ed3eaab2875b6d7", 0, "79f70f28f46ffd0b8f33e1e588be761b", "mustafa", "Mustafa", "Khazaee" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buys_MedicineId",

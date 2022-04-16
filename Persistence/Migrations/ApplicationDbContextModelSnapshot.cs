@@ -96,7 +96,6 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -158,6 +157,9 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -268,15 +270,24 @@ namespace Persistence.Migrations
                     b.Property<string>("ManufacturingCompany")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("ManufacturingDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoResized")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("SellProfitPercent")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -437,6 +448,14 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("firstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("lastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -444,16 +463,18 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("52df5389-d0f8-4362-9c53-c243965157b1"),
+                            Id = new Guid("f9000847-6281-41cc-991b-85059886e74d"),
                             CreatedBy = "A",
-                            CreatedDate = new DateTime(2022, 4, 12, 0, 30, 18, 154, DateTimeKind.Utc).AddTicks(9216),
+                            CreatedDate = new DateTime(2022, 4, 15, 16, 46, 5, 671, DateTimeKind.Local).AddTicks(5322),
                             Email = "mustafa.khazaee1@gmail.com",
                             IsDeleted = false,
                             IsLocked = false,
-                            Password = "04b82442e1b2be98056d6e6c11f096720396e1264199ed517b914462a8df4b53",
+                            Password = "5092dae6327c851d502ec1d804f5d502d1d5246377b3ce869ed3eaab2875b6d7",
                             Role = 0,
-                            Salt = "3b866a48729a2e21357b6ed6fbff38b5",
-                            UserName = "mustafa"
+                            Salt = "79f70f28f46ffd0b8f33e1e588be761b",
+                            UserName = "mustafa",
+                            firstName = "Mustafa",
+                            lastName = "Khazaee"
                         });
                 });
 

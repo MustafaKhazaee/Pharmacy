@@ -11,6 +11,7 @@ namespace Application.Common {
         public ISalaryRepository SalaryRepository { get; set; }
         public ISellRepository SellRepository { get; set; }
         public IUserRepository UserRepository { get; set; }
+        public ITransactionRepository TransactionRepository { get; set; }
         public Task<int> CompleteAsync(CancellationToken cancellationToken);
     }
 }

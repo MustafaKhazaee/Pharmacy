@@ -1,0 +1,233 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">مشتریان</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#customerModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="customerTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>شماره</th>
+                                <th>نام</th>
+                                <th>تخلص</th>
+                                <th>تاریخ تولد</th>
+                                <th>موبایل</th>
+                                <th>آدرس</th>
+                                <th>تاریخ شروع همکاری</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="customerModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="customerModalklHeader">ثبت مشتری</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="customerForm">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>نام</label>
+                                    <input required id="addFirstName" type="text" name="firstName" class="form-control" placeholder="نام">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">نام نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تخلص</label>
+                                    <input id="addLastName" type="text" name="lastName" class="form-control" placeholder="تخلص">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ تولد</label>
+                                    <input type="date" name="dateOfBirth" class="form-control" placeholder="تاریخ تولد">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>آدرس</label>
+                                    <input type="text" name="address" class="form-control" placeholder="آدرس">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>موبایل</label>
+                                    <input type="text" name="mobile" class="form-control" placeholder="موبایل">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ شروع همکاری</label>
+                                    <input type="date" name="dateOfJoining" class="form-control" placeholder="تاریخ شروع همکاری">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addEmployee()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="customerEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش مشتری</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="customerEditForm">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateEmployee()" class="btn btn-primary">اعمال تغیرات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script {
+<script>
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    function addEmployee () {
+        const form = document.querySelector('form[id="customerForm"]');
+        const firstName = document.querySelector('input[id="addFirstName"]').value;
+        if (!firstName) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.post("/Customer/AddCustomer", form, forgeryToken, () => {
+                $('#customerModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+
+    const k = $('#customerTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        searching: { regex: false },
+        ajax: {
+            url: "/Customer/GetCustomer",
+            type: "POST",
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
+        },
+        columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: "firstName", name: "firstName" },
+            { data: "lastName", name: "lastName" },
+            { 
+                data: "dateOfBirth",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            { data: "mobile", name: "mobile" },
+            { data: "address", name: "address" },
+            { 
+                data: "dateOfJoining",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            {   
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editCustomer('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteCustomer('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            },
+        ]
+    });
+
+    async function editCustomer (customerId) {
+        const d = await fetchAPI.getUpdateModal("/Customer/GetUpdateModal", customerId, () => {
+            $('#customerEditModal').modal('show');
+        });
+        document.querySelector('form[id="customerEditForm"]').innerHTML = d;
+    }
+
+    deleteCustomer = (customerId) => alertify.confirm("حذف مشتری", "میخواهد حذف شود؟", () => {
+        fetchAPI.delete("/Customer/DeleteCustomer", customerId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+    
+    async function updateEmployee () {
+        const form = document.querySelector('form[id="customerEditForm"]');
+        const firstName = document.querySelector('input[id="updateFirstname"]').value;
+        if (!firstName) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            await fetchAPI.put("/Customer/UpdateCustomer", form, forgeryToken, () => {
+                $('#customerEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("تغیرات اعمال شد");
+            });
+        }
+    }
+</script>
+}

@@ -13,13 +13,13 @@ namespace Infrastructure.Implementations.Services {
         }
         public async Task<Employee> SaveEmployee(EmployeeModel employeeModel) {
             PictureService pictureService = new PictureService();
-            string[] ph = pictureService.SaveAndResizePicture(employeeModel.Photo, 100, 100);
+            string[] ph = pictureService.SaveAndResizePicture(employeeModel.Photo, 100, 100, "employee");
             Employee employee = ViewModelToEntity(employeeModel, ph);
             return (Employee) await AddAsync(employee);
         }
         public async Task<Employee> UpdateEmployee(EmployeeModel employeeModel) {
             PictureService pictureService = new PictureService();
-            string[] ph = pictureService.SaveAndResizePicture(employeeModel.Photo, 100, 100);
+            string[] ph = pictureService.SaveAndResizePicture(employeeModel.Photo, 100, 100, "employee");
             Employee employee = await FindAsync(employeeModel.id);
             employee.FirstName = employeeModel.FirstName;
             employee.LastName = employeeModel.LastName;
@@ -40,7 +40,7 @@ namespace Infrastructure.Implementations.Services {
                     e.Mobile.Contains(searchKey) || searchKey == null) && !e.IsDeleted, start, length);
             return new DataTableResult<Employee> {
                 Data = list,
-                RecordsFiltered = list.Count(),
+                RecordsFiltered = all,
                 RecordsTotal = all,
                 Draw = param.Draw
             };

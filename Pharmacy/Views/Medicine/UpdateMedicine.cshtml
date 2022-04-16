@@ -1,0 +1,95 @@
+﻿@model Domain.Entities.Medicine
+@{
+    string a = Model.ManufacturingDate.ToString("yyyy-MM-dd");
+    string b = Model.ExpirationDate.ToString("yyyy-MM-dd");
+}
+<div class="row">
+     <input value="@Model.Id" id="updateid" hidden type="text" name="id" class="form-control" placeholder="نام">
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>نام</label>
+            <input required value="@Model.Name" id="updateName" type="text" name="name" class="form-control" placeholder="نام">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">نام نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>کمپنی تولید کننده</label>
+            <input value="@Model.ManufacturingCompany" id="updateManufacturingCompany" type="text" name="manufacturingCompany" class="form-control" placeholder="کمپنی تولد کننده">
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>توضیحات</label>
+            <input value="@Model.Description" id="updateDescription" type="text" name="description" class="form-control" placeholder="توضیحات">
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>نوعیت</label>
+            <select name="type" class="form-select" id="updateType">
+                <!option @(Model.Type.ToString().Equals("Injection") ? "selected" : "") value="0">Injection</!option>
+                <!option @(Model.Type.ToString().Equals("Tablet") ? "selected" : "") value="1">Tablet</!option>
+                <!option @(Model.Type.ToString().Equals("Syrup") ? "selected" : "") value="2">Syrup</!option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تعداد</label>
+            <input required value="@Model.Count" id="updateCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تاریخ تولید</label>
+            <input value="@a" id="updateManufacturingDate" type="date" name="manufacturingDate" class="form-control" placeholder="تاریخ تولید" required>
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تاریخ تولید نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تاریخ انقضا</label>
+            <input value="@b" id="updateExpirationDate" type="date" name="expirationDate" class="form-control" placeholder="تاریخ انقضا" required>
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تاریخ انقضا نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>دسته بندی</label>
+            <select name="category" required id="updateCategory" class="form-select">
+                <!option @(Model.Category.ToString().Equals("Antibiotics") ? "selected" : "") value="0">Antibiotics</!option>
+                <!option @(Model.Category.ToString().Equals("Vitamine") ? "selected" : "") value="1">Vitamine</!option>
+            </select>
+            <div class="valid-feedback">انتخاب شد</div>
+            <div class="invalid-feedback">دسته بندی را انتخاب نمایید!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>قیمت خرید</label>
+            <input value="@Model.BuyPrice" id="updateBuyPrice" type="number" min="0" name="buyPrice" class="form-control" placeholder="قیمت خرید" required>
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">قیمت خرید نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>فیصدی مفاد</label>
+            <input value="@Model.SellProfitPercent" id="updateSellProfitPercent" type="number" min="0" name="sellProfitPercent" class="form-control" placeholder="فیصدی مفاد" required>
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">فیصدی مفاد نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>عکس</label>
+            <input  value="@Model.Photo" id="updatePhoto" type="file" accept="image/*" name="photo" class="form-control" placeholder="عکس">
+        </div>
+    </div>
+</div>

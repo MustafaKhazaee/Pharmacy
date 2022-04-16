@@ -18,6 +18,7 @@
                     <table id="employeeTable" class="table table-center table-hover table-responsive-sm table-stripped">
                         <thead class="thead-light">
                             <tr>
+                                <th>شماره</th>
                                 <th>عکس</th>
                                 <th>نام</th>
                                 <th>تخلص</th>
@@ -25,7 +26,7 @@
                                 <th>موبایل</th>
                                 <th>ایمیل</th>
                                 <th>آدرس</th>
-                                <th >ویرایش</th>
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody >
@@ -170,12 +171,20 @@
             headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
         },
         columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
             { 
                 data: "photoResized",
                 render: function (data, type, row) {
                     if (data) {
-                        const b = row.photo.substring(row.photo.indexOf("\images"));
-                        const a = data.substring(data.indexOf("\images"));
+                        // minus one to include the leading slash, so it starts 
+                        // searching the path from the root of the application.
+                        const b = row.photo.substring(row.photo.indexOf("\images")-1);
+                        const a = data.substring(data.indexOf("\images")-1);
                         return `<a href="${b}" target="blank"><img class="my-photo-class" src="${a}" /></a>`;
                     }
                     return '<img class="my-photo-class" src="\\images\\default.png" />';

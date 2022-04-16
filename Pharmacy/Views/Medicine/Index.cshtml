@@ -1,0 +1,355 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">ادویه</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#medicineModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="medicineTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>شماره</th>
+                                <th>عکس</th>
+                                <th>نام</th>
+                                <th>تولید کننده</th>
+                                <th>توضیحات</th>
+                                <th>نوعیت</th>
+                                <th>تعداد</th>
+                                <th>دسته بندی</th>
+                                <th>تاریخ تولید</th>
+                                <th>تاریخ انقضا</th>
+                                <th>تا انقضا</th>
+                                <th>قیمت خرید</th>
+                                <th>فیصدی مفاد</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="medicineModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="medicineModalklHeader">ثبت دوا</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="medicineForm">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>نام</label>
+                                    <input required id="addname" type="text" name="name" class="form-control" placeholder="نام">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">نام نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>کمپنی تولید کننده</label>
+                                    <input id="addLastname" type="text" name="manufacturingCompany" class="form-control" placeholder="کمپنی تولد کننده">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>توضیحات</label>
+                                    <input id="addLastname" type="text" name="description" class="form-control" placeholder="توضیحات">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>نوعیت</label>
+                                    <select name="type" id="addMedicineType" class="form-control">
+                                        <option value="-1">انتخاب نمایید</option>
+                                        <option value="0">Injection</option>
+                                        <option value="1">Tablet</option>
+                                        <option value="2">Syrup</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تعداد</label>
+                                    <input required id="addCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ تولید</label>
+                                    <input id="addManufacturingDate" type="date" name="manufacturingDate" class="form-control" placeholder="تاریخ تولید" required>
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تاریخ تولید نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ انقضا</label>
+                                    <input id="addExpirationDate" type="date" name="expirationDate" class="form-control" placeholder="تاریخ انقضا" required>
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تاریخ انقضا نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>دسته بندی</label>
+                                    <select id="addCatergory" name="category" required  class="form-control">
+                                        <option value="-1">انتخاب نمایید</option>
+                                        <option value="0">Antibiotics</option>
+                                        <option value="1">Vitamine</option>
+                                    </select>
+                                    <div class="valid-feedback">انتخاب شد</div>
+                                    <div class="invalid-feedback">دسته بندی را انتخاب نمایید!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>قیمت خرید</label>
+                                    <input id="addBuyPrice" type="number" min="0" name="buyPrice" class="form-control" placeholder="قیمت خرید" required>
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">قیمت خرید نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>فیصدی مفاد</label>
+                                    <input id="addSellProfitPercent" type="number" min="0" name="sellProfitPercent" class="form-control" placeholder="فیصدی مفاد" required>
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">فیصدی مفاد نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>عکس</label>
+                                    <input id="updatePhoto" type="file" accept="image/*" name="photo" class="form-control" placeholder="عکس">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addMedicine()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="medicineEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش دوا</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="medicineEditForm">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateMedicine()" class="btn btn-primary">اعمال تغیرات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script {
+<script>
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    function addMedicine () {
+        const form = document.querySelector('form[id="medicineForm"]');
+        const name = document.querySelector('input[id="addname"]').value;
+        const count =  document.querySelector('input[id="addCount"]').value;
+        const mnDate =  document.querySelector('input[id="addManufacturingDate"]').value;
+        const exDate =  document.querySelector('input[id="addExpirationDate"]').value;
+        const category =  document.querySelector('select[id="addCatergory"]').selectedOptions[0].value;
+        const mType =  document.querySelector('select[id="addMedicineType"]').selectedOptions[0].value;
+        const buyPrice =  document.querySelector('input[id="addBuyPrice"]').value;
+        const sellPerc =  document.querySelector('input[id="addSellProfitPercent"]').value;
+        if (!name || !count || !mnDate || !exDate || !buyPrice || !sellPerc) {
+            form.setAttribute('class', 'was-validated');
+        } else if (category.toString() === '-1') {
+            alertify.warning("لطفا دسته بندی را انتخاب نمایید.");
+        } else if (mType.toString() === '-1') {
+            alertify.warning("لطفا نوعیت را انتخاب نمایید.");
+        } else {
+            fetchAPI.post("/Medicine/AddMedicine", form, forgeryToken, () => {
+                $('#medicineModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+
+    const k = $('#medicineTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        searching: { regex: false },
+        ajax: {
+            url: "/Medicine/GetMedicine",
+            type: "POST",
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
+        },
+        columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { 
+                data: "photoResized",
+                render: function (data, type, row) {
+                    if (data) {
+                        // minus one to include the leading slash, so it starts 
+                        // searching the path from the root of the application.
+                        const b = row.photo.substring(row.photo.indexOf("\images")-1);
+                        const a = data.substring(data.indexOf("\images")-1);
+                        return `<a href="${b}" target="blank"><img class="my-photo-class" src="${a}" /></a>`;
+                    }
+                    return '<img class="my-photo-class" src="\\images\\default.png" />';
+                }            
+            },
+            { data: "name", name: "name" },
+            { data: "manufacturingCompany", name: "manufacturingCompany" },
+            { data: "description", name: "description" },
+            { 
+                data: "type",
+                render: function (raw) {
+                    console.log(raw);
+                    const types = ["Injection", "Tablet", "Syrup"];
+                    return types[raw];
+                }
+            },
+            { data: "count", name: "count" },
+            { 
+                data: "category",
+                render: function (raw) {
+                    console.log(raw);
+                    const category = ["Antibiotics", "Vitamine"];
+                    return category[raw];
+                }
+            },
+            { 
+                data: "manufacturingDate",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            { 
+                data: "expirationDate",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            {
+                data: "remainingUsableDays",
+                render: function (raw) {
+                    const n = Number(raw);
+                    if (n <= 7) {
+                        return `<span class="badge bg-danger-light">${n} روز</span>`;
+                    } else if (n > 7 && n <= 30) {
+                        return `<span class="badge bg-warning-light">${n} روز</span>`;
+                    }
+                    return `<span class="badge bg-success-light">${n} روز</span>`;
+                }
+            },
+            { data: "buyPrice", name: "buyPrice" },
+            { data: "sellProfitPercent", name: "sellProfitPercent" },
+            {   
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editMedicine('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteMedicine('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            },
+        ]
+    });
+
+    async function editMedicine (medicineId) {
+        const d = await fetchAPI.getUpdateModal("/Medicine/GetUpdateModal", medicineId, () => {
+            $('#medicineEditModal').modal('show');
+        });
+        document.querySelector('form[id="medicineEditForm"]').innerHTML = d;
+    }
+
+    deleteMedicine = (medicineId) => alertify.confirm("حذف دوا", "میخواهد حذف شود؟", () => {
+        fetchAPI.delete("/Medicine/DeleteMedicine", medicineId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+    
+    async function updateMedicine () {
+        const form = document.querySelector('form[id="medicineEditForm"]');
+        const name = document.querySelector('input[id="updateName"]').value;
+        const count =  document.querySelector('input[id="updateCount"]').value;
+        const mnDate =  document.querySelector('input[id="updateManufacturingDate"]').value;
+        const exDate =  document.querySelector('input[id="updateExpirationDate"]').value;
+        const category =  document.querySelector('select[id="updateCategory"]').selectedOptions[0].value;
+        const mType =  document.querySelector('select[id="updateType"]').selectedOptions[0].value;
+        const buyPrice =  document.querySelector('input[id="updateBuyPrice"]').value;
+        const sellPerc =  document.querySelector('input[id="updateSellProfitPercent"]').value;
+        if (!name || !count || !mnDate || !exDate || !buyPrice || !sellPerc) {
+            form.setAttribute('class', 'was-validated');
+        } else if (category.toString() === '-1' ) {
+            alertify.warning("لطفا دسته بندی را انتخاب نمایید.");
+        } else if (mType.toString() === '-1' ) {
+            alertify.warning("لطفا نوعیت را انتخاب نمایید.");
+        } else {
+            await fetchAPI.put("/Medicine/UpdateMedicine", form, forgeryToken, () => {
+                $('#medicineEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("تغیرات اعمال شد");
+            });
+        }
+    }
+</script>
+}

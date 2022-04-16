@@ -1,6 +1,7 @@
 ﻿
 using Application.Extensions;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence {
@@ -20,7 +21,8 @@ namespace Persistence {
             List<User> defaultUser = new List<User> {
                 new User {
                     Id = Guid.NewGuid(), UserName = "mustafa", Password = $"Root_Mustafa@123{salt}".GetHash(),
-                    Salt = salt, CreatedBy = "A", Email = "mustafa.khazaee1@gmail.com"
+                    Salt = salt, CreatedBy = "A", Email = "mustafa.khazaee1@gmail.com", CreatedDate = DateTime.Now,
+                    firstName = "Mustafa", lastName = "Khazaee", Role = Role.root
                 },
             };
             modelBuilder.Entity<User>().HasData(defaultUser);

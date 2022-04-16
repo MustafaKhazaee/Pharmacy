@@ -16,6 +16,7 @@ namespace Infrastructure.Common {
             SalaryService = new SalaryService(context, a);
             SellService = new SellService(context, a);
             UserService = new UserService(context, a);
+            TransactionService = new TransactionService(context, a);
             PictureService = new PictureService();
         }
 
@@ -28,5 +29,6 @@ namespace Infrastructure.Common {
         public ISellService SellService { get; set; }
         public IUserService UserService { get; set; }
         public IPictureService PictureService { get; set; }
+        public ITransactionService TransactionService { get; set; }
     }
 }

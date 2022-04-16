@@ -16,6 +16,7 @@ namespace Infrastructure.Common {
             MedicineRepository = new MedicineRepository(_context);
             SalaryRepository = new SalaryRepository(_context);
             SellRepository = new SellRepository(_context);
+            TransactionRepository = new TransactionRepository(_context);
             UserRepository = new UserRepository(_context);
         }
 
@@ -27,6 +28,7 @@ namespace Infrastructure.Common {
         public ISalaryRepository SalaryRepository { get; set; }
         public ISellRepository SellRepository { get; set; }
         public IUserRepository UserRepository { get; set; }
+        public ITransactionRepository TransactionRepository { get; set; }
         public async Task<int> CompleteAsync (CancellationToken cancellationToken) => await _context.SaveChangesAsync();
     }
 }

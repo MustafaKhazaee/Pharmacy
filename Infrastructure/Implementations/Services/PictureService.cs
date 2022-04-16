@@ -6,13 +6,13 @@ using System.Drawing.Imaging;
 
 namespace Infrastructure.Implementations.Services {
     public class PictureService : IPictureService {
-        public string[] SaveAndResizePicture(IFormFile file, int width, int height) {
+        public string[] SaveAndResizePicture(IFormFile file, int width, int height, string path) {
             string [] paths = new string[2];
             if (file == null)
                 return null;
             string rootPath = Path.GetFullPath("wwwroot");
-            string filepathOrginial = Path.Combine(rootPath, "images\\employee\\original\\", file.FileName);
-            string filepathSmall = Path.Combine(rootPath, "images\\employee\\small\\", file.FileName);
+            string filepathOrginial = Path.Combine(rootPath, $"images\\{path}\\original\\", file.FileName);
+            string filepathSmall = Path.Combine(rootPath, $"images\\{path}\\small\\", file.FileName);
 
             using (Stream fileStream = new FileStream(filepathOrginial, FileMode.Create, FileAccess.Write)) {
                 file.CopyTo(fileStream);
