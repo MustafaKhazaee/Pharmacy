@@ -143,9 +143,9 @@ namespace Persistence.Migrations
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Month = table.Column<int>(type: "int", nullable: false),
-                    Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
                     DatePaid = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -229,7 +229,7 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsDeleted", "IsLocked", "LastModifiedBy", "LastModifiedDate", "Password", "Role", "Salt", "UserName", "firstName", "lastName" },
-                values: new object[] { new Guid("f9000847-6281-41cc-991b-85059886e74d"), "A", new DateTime(2022, 4, 15, 16, 46, 5, 671, DateTimeKind.Local).AddTicks(5322), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "5092dae6327c851d502ec1d804f5d502d1d5246377b3ce869ed3eaab2875b6d7", 0, "79f70f28f46ffd0b8f33e1e588be761b", "mustafa", "Mustafa", "Khazaee" });
+                values: new object[] { new Guid("5dc0ceed-6f19-46d7-898c-fafc4faae6a0"), "A", new DateTime(2022, 4, 16, 14, 46, 4, 506, DateTimeKind.Local).AddTicks(3351), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "4875395e06ca948c587439a75a7b3add1ac3673a25482505d662351ec9be3d3d", 0, "be91d9f44214f7d0c5322576cb022a74", "mustafa", "Mustafa", "Khazaee" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buys_MedicineId",

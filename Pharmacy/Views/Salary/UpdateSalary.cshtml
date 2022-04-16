@@ -1,0 +1,79 @@
+﻿@model Domain.Entities.Salary
+<div class="row">
+     <input value="@Model.Id" id="updateid" hidden type="text" name="id" class="form-control" placeholder="نام">
+     <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>کارمند</label>
+            <input list="employeesDatalist" placeholder="کارمند" name="employeeId" class="form-select" id="updateEmployeeSalary">
+            <datalist id="employeesDatalist">
+                <option value="0">sd</option>
+                <option value="1">sd</option>
+                <option value="2">sd</option>
+            </datalist>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>سال</label>
+            <select name="year" id="updateSalaryYear" class="form-select">
+                <option value="-1">انتخاب نمایید</option>
+                <option value="1400">1400</option>
+                <option value="1401">1401</option>
+                <option value="1402">1402</option>
+                <option value="1403">1403</option>
+                <option value="1404">1404</option>
+                <option value="1405">1405</option>
+                <option value="1406">1406</option>
+                <option value="1407">1407</option>
+                <option value="1408">1408</option>
+                <option value="1409">1409</option>
+                <option value="1410">1410</option>
+                <option value="1411">1411</option>
+                <option value="1412">1412</option>
+                <option value="1413">1413</option>
+                <option value="1414">1414</option>
+                <option value="1415">1415</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>ماه</label>
+            <select name="month" id="updateSalaryMonth" class="form-select">
+                <option value="-1">انتخاب نمایید</option>
+                <option value="1">حمل</option>
+                <option value="2">ثور</option>
+                <option value="3">جوزا</option>
+                <option value="4">سرطان</option>
+                <option value="5">اسد</option>
+                <option value="6">سنبله</option>
+                <option value="7">میزان</option>
+                <option value="8">عقرب</option>
+                <option value="9">قوس</option>
+                <option value="10">جدی</option>
+                <option value="11">دلو</option>
+                <option value="12">حوت</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>مقدار</label>
+            <input required id="updateAmountSalary" type="number" min="0" name="amount" class="form-control" placeholder="مقدار">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">مقدار نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تاریخ پرداخت</label>
+            <input id="updateSalaryDate" type="date" name="datePaid" class="form-control" placeholder="تاریخ پرداخت" required>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>توضیحات</label>
+            <input id="updateDescSalary" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+        </div>
+    </div>
+</div>

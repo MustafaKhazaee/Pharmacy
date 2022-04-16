@@ -1,7 +1,7 @@
 ﻿
 namespace Domain.Enums {
     public enum Month {
-        Hamal,
+        Hamal = 1,
         Sawr,
         Jawza,
         Saratan,

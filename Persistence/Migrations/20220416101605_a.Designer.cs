@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220415121607_a")]
+    [Migration("20220416101605_a")]
     partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -336,12 +336,10 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Remarks")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Year")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -465,15 +463,15 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f9000847-6281-41cc-991b-85059886e74d"),
+                            Id = new Guid("5dc0ceed-6f19-46d7-898c-fafc4faae6a0"),
                             CreatedBy = "A",
-                            CreatedDate = new DateTime(2022, 4, 15, 16, 46, 5, 671, DateTimeKind.Local).AddTicks(5322),
+                            CreatedDate = new DateTime(2022, 4, 16, 14, 46, 4, 506, DateTimeKind.Local).AddTicks(3351),
                             Email = "mustafa.khazaee1@gmail.com",
                             IsDeleted = false,
                             IsLocked = false,
-                            Password = "5092dae6327c851d502ec1d804f5d502d1d5246377b3ce869ed3eaab2875b6d7",
+                            Password = "4875395e06ca948c587439a75a7b3add1ac3673a25482505d662351ec9be3d3d",
                             Role = 0,
-                            Salt = "79f70f28f46ffd0b8f33e1e588be761b",
+                            Salt = "be91d9f44214f7d0c5322576cb022a74",
                             UserName = "mustafa",
                             firstName = "Mustafa",
                             lastName = "Khazaee"

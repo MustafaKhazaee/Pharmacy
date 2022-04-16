@@ -1,0 +1,261 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">معاشات</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#salaryModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="salaryTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>شماره</th>
+                                <th>کارمند</th>
+                                <th>مقدار</th>
+                                <th>سال</th>
+                                <th>ماه</th>
+                                <th>تاریخ پرداخت</th>
+                                <th>توضیحات</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="salaryModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="salaryModalklHeader">ثبت معاش</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="salaryForm">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>کارمند</label>
+                                    <input list="employeesDatalist" placeholder="کارمند" name="employeeId" class="form-select" id="addEmployeeSalary">
+                                    <datalist id="employeesDatalist">
+                                        <option value="0">sd</option>
+                                        <option value="1">sd</option>
+                                        <option value="2">sd</option>
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>سال</label>
+                                    <select name="year" id="addSalaryYear" class="form-select">
+                                        <option value="-1">انتخاب نمایید</option>
+                                        <option value="1400">1400</option>
+                                        <option value="1401">1401</option>
+                                        <option value="1402">1402</option>
+                                        <option value="1403">1403</option>
+                                        <option value="1404">1404</option>
+                                        <option value="1405">1405</option>
+                                        <option value="1406">1406</option>
+                                        <option value="1407">1407</option>
+                                        <option value="1408">1408</option>
+                                        <option value="1409">1409</option>
+                                        <option value="1410">1410</option>
+                                        <option value="1411">1411</option>
+                                        <option value="1412">1412</option>
+                                        <option value="1413">1413</option>
+                                        <option value="1414">1414</option>
+                                        <option value="1415">1415</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>ماه</label>
+                                    <select name="month" id="addSalaryMonth" class="form-select">
+                                        <option value="-1">انتخاب نمایید</option>
+                                        <option value="1">حمل</option>
+                                        <option value="2">ثور</option>
+                                        <option value="3">جوزا</option>
+                                        <option value="4">سرطان</option>
+                                        <option value="5">اسد</option>
+                                        <option value="6">سنبله</option>
+                                        <option value="7">میزان</option>
+                                        <option value="8">عقرب</option>
+                                        <option value="9">قوس</option>
+                                        <option value="10">جدی</option>
+                                        <option value="11">دلو</option>
+                                        <option value="12">حوت</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>مقدار</label>
+                                    <input required id="addAmountSalary" type="number" min="0" name="amount" class="form-control" placeholder="مقدار">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">مقدار نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ پرداخت</label>
+                                    <input id="addSalaryDate" type="date" name="datePaid" class="form-control" placeholder="تاریخ پرداخت" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>توضیحات</label>
+                                    <input id="addDescSalary" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addSalary()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="salaryEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش معاش</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="salaryEditForm">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateSalary()" class="btn btn-primary">اعمال تغیرات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script {
+<script>
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    function addSalary () {
+        const form = document.querySelector('form[id="salaryForm"]');
+        const empId = document.querySelector('input[id="addEmployeeSalary"]').value;
+        const year = document.querySelector('select[id="addSalaryYear"]').selectedOptions[0].value;
+        const month = document.querySelector('select[id="addSalaryMonth"]').selectedOptions[0].value;
+        const payDate = document.querySelector('input[id="addSalaryDate"]').value;
+        const desc = document.querySelector('input[id="addDescSalary"]').value;
+
+        if (!empId || !payDate) {
+            form.setAttribute('class', 'was-validated');
+        } else if (!year) {
+            alertify.warning("لطفا سال را انتخاب نمایید.");
+        } else if (!month) {
+            alertify.warning("لطفا ماه را انتخاب نمایید.");
+        } else {
+            fetchAPI.post("/Salary/AddSalary", form, forgeryToken, () => {
+                $('#salaryModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+    document.querySelector('input[id="addEmployeeSalary"]').addEventListener('keyup', (event) => {
+        
+    });
+    const k = $('#salaryTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        searching: { regex: false },
+        ajax: {
+            url: "/Salary/GetSalary",
+            type: "POST",
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
+        },
+        columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: "name", name: "name" },
+            { data: "description", name: "description" },
+            {
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editSalary('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteSalary('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            }
+        ]
+    });
+
+    async function editSalary (salaryId) {
+        const d = await fetchAPI.getUpdateModal("/Salary/GetUpdateModal", salaryId, () => {
+            $('#salaryEditModal').modal('show');
+        });
+        document.querySelector('form[id="salaryEditForm"]').innerHTML = d;
+    }
+
+    deleteSalary = (salaryId) => alertify.confirm("حذف معاش", "میخواهد حذف شود؟", () => {
+        fetchAPI.delete("/Salary/DeleteSalary", salaryId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+    
+    async function updateSalary () {
+        const form = document.querySelector('form[id="salaryEditForm"]');
+        const firstName = document.querySelector('input[id="updateFirstname"]').value;
+        if (!firstName) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            await fetchAPI.put("/Salary/UpdateSalary", form, forgeryToken, () => {
+                $('#salaryEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("تغیرات اعمال شد");
+            });
+        }
+    }
+</script>
+}
