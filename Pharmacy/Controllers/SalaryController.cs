@@ -15,7 +15,7 @@ namespace WebUI.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<DataTableResult<Salary>> GetSalaryAsync(DataTableParams param) =>
+        public async Task<DataTableResult<object>> GetSalaryAsync(DataTableParams param) =>
             await services.SalaryService.GetSalaryPage(param);
 
         [HttpDelete]

@@ -36,8 +36,20 @@ namespace Infrastructure.Implementations.Services {
         public async Task<DataTableResult<Employee>> GetEmployeePage(DataTableParams param) {
             string searchKey = param.Search.Value;
             int start = param.Start, length = param.Length, all = await CountAsync();
-            IEnumerable<Employee> list = await FindAllAsync(e => (e.FirstName.Contains(searchKey) || e.LastName.Contains(searchKey) ||
-                    e.Mobile.Contains(searchKey) || searchKey == null) && !e.IsDeleted, start, length);
+            IEnumerable<Employee> list = context.Employees.Where(e => (e.FirstName.Contains(searchKey) || e.LastName.Contains(searchKey) ||
+                    e.Mobile.Contains(searchKey) || searchKey == null) && !e.IsDeleted).Skip(start).Take(length)
+                    .OrderByDescending(e => e.CreatedDate).Select(
+                    e => new Employee {
+                        FirstName = e.FirstName,
+                        LastName = e.LastName,
+                        Address = e.Address,
+                        Mobile = e.Mobile,
+                        Email = e.Email,
+                        DateOfBirth = e.DateOfBirth,
+                        Photo = e.Photo,
+                        PhotoResized = e.PhotoResized,
+                        Id = e.Id,
+                    }).ToList();
             return new DataTableResult<Employee> {
                 Data = list,
                 RecordsFiltered = all,
@@ -55,5 +67,14 @@ namespace Infrastructure.Implementations.Services {
             Photo = ph != null ? ph[0] : null,
             PhotoResized = ph != null ? ph[1] : null
         };
+
+        public async Task<SelectResult> GetList(string key) {
+            List<object> list = new List<object>();
+            (await FindAllAsync(e => e.FirstName.Contains(key) || e.LastName.Contains(key) || key == null, 0, 10))
+                .ToList().ForEach(e => list.Add(new { id = e.Id, text = $"{e.FirstName} {e.LastName}"}));
+            return new SelectResult {
+                results = list
+            };
+        }
     }
 }

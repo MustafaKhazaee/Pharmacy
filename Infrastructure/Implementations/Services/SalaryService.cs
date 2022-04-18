@@ -7,12 +7,20 @@ using Persistence;
 namespace Infrastructure.Implementations.Services {
     public class SalaryService : GenericService<Salary>, ISalaryService {
         public SalaryService (ApplicationDbContext applicationDbContext, IHttpContextAccessor a) : base (applicationDbContext, a) {}
-        public async Task<DataTableResult<Salary>> GetSalaryPage(DataTableParams param) {
+        public async Task<DataTableResult<object>> GetSalaryPage(DataTableParams param) {
             string searchKey = param.Search.Value;
             int start = param.Start, length = param.Length, all = await CountAsync();
-            IEnumerable<Salary> list = await FindAllAsync(e => (e.Employee.FirstName.Contains(searchKey) ||
-                e.Employee.LastName.Contains(searchKey) || searchKey == null) && !e.IsDeleted, start, length);
-            return new DataTableResult<Salary> {
+            IEnumerable<object> list = await Task.FromResult(context.Salaries.Where(e => (e.Employee.FirstName.Contains(searchKey)
+                || e.Employee.LastName.Contains(searchKey) || searchKey == null) && !e.IsDeleted).Select(s => new {
+                    id = s.Id,
+                    fullName = $"{s.Employee.FirstName} {s.Employee.LastName}",
+                    amount = s.Amount,
+                    paidDate = s.DatePaid,
+                    month = s.Month,
+                    year = s.Year,
+                    remarks = s.Remarks
+                }).Skip(0).Take(10).ToList());
+            return new DataTableResult<object> {
                 Data = list,
                 RecordsFiltered = all,
                 RecordsTotal = all,

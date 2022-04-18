@@ -21,8 +21,8 @@
                                 <th>شماره</th>
                                 <th>کارمند</th>
                                 <th>مقدار</th>
-                                <th>سال</th>
                                 <th>ماه</th>
+                                <th>سال</th>
                                 <th>تاریخ پرداخت</th>
                                 <th>توضیحات</th>
                                 <th>عملیات</th>
@@ -53,13 +53,9 @@
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
                                 <div class="form-group">
-                                    <label>کارمند</label>
-                                    <input list="employeesDatalist" placeholder="کارمند" name="employeeId" class="form-select" id="addEmployeeSalary">
-                                    <datalist id="employeesDatalist">
-                                        <option value="0">sd</option>
-                                        <option value="1">sd</option>
-                                        <option value="2">sd</option>
-                                    </datalist>
+                                    <label>لطفا کارمند را جستجو و انتخاب نمایید:</label>
+                                    <select name="employeeId" id="addSalaryEmloyeeId">
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
@@ -118,6 +114,8 @@
                                 <div class="form-group">
                                     <label>تاریخ پرداخت</label>
                                     <input id="addSalaryDate" type="date" name="datePaid" class="form-control" placeholder="تاریخ پرداخت" required>
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تاریخ پرداخت نمیتواند خالی باشد!</div>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12">
@@ -172,7 +170,7 @@
     var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
     function addSalary () {
         const form = document.querySelector('form[id="salaryForm"]');
-        const empId = document.querySelector('input[id="addEmployeeSalary"]').value;
+        const empId = document.querySelector('select[id="addSalaryEmloyeeId"]').selectedOptions[0].value;
         const year = document.querySelector('select[id="addSalaryYear"]').selectedOptions[0].value;
         const month = document.querySelector('select[id="addSalaryMonth"]').selectedOptions[0].value;
         const payDate = document.querySelector('input[id="addSalaryDate"]').value;
@@ -193,9 +191,29 @@
             });
         }
     }
-    document.querySelector('input[id="addEmployeeSalary"]').addEventListener('keyup', (event) => {
-        
+
+    $(document).ready(function() {
+        s = $("#addSalaryEmloyeeId");
+	    s.select2({
+            tags: true,
+            dropdownParent: s.parent(),
+            ajax: { url: "/Employee/GetList/" }
+        });
     });
+    const months = {
+        "Hamal": "حمل",
+        "Sawr": "ثور",
+        "Jawza": "جوزا",
+        "Saratan": "سرطان",
+        "Asad": "اسد",
+        "Sunbula": "سنبله",
+        "Mizan": "میزان",
+        "Aqrab": "عقرب",
+        "Qaws": "قوس",
+        "Jadi": "جدی",
+        "Dalwa": "دلو",
+        "Hoot": "حوت"
+    };
     const k = $('#salaryTable').dataTable({
         stateSave: true,
         autoWidth: true,
@@ -215,8 +233,25 @@
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }
             },
-            { data: "name", name: "name" },
-            { data: "description", name: "description" },
+            { data: "fullName", name: "fullName" },
+            { data: "amount", name: "amount" },
+            { 
+                data: "month",
+                render: function (raw) {
+                    return months[raw];
+                }
+            },
+            { data: "year", name: "year" },
+            { 
+                data: "paidDate",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            { data: "remarks", name: "remarks" },
             {
                 data: "id",
                 render: function (raw) {
@@ -232,6 +267,13 @@
             $('#salaryEditModal').modal('show');
         });
         document.querySelector('form[id="salaryEditForm"]').innerHTML = d;
+        
+        const su = $("#updateSalaryEmloyeeId");
+	    su.select2({
+            tags: true,
+            dropdownParent: su.parent(),
+            ajax: { url: "/Employee/GetList/" }
+        });
     }
 
     deleteSalary = (salaryId) => alertify.confirm("حذف معاش", "میخواهد حذف شود؟", () => {
@@ -245,9 +287,17 @@
     
     async function updateSalary () {
         const form = document.querySelector('form[id="salaryEditForm"]');
-        const firstName = document.querySelector('input[id="updateFirstname"]').value;
-        if (!firstName) {
+        const empId = document.querySelector('select[id="updateSalaryEmloyeeId"]').selectedOptions[0].value;
+        const year = document.querySelector('select[id="updateSalaryYear"]').selectedOptions[0].value;
+        const month = document.querySelector('select[id="updateSalaryMonth"]').selectedOptions[0].value;
+        const payDate = document.querySelector('input[id="updateSalaryDate"]').value;
+        const desc = document.querySelector('input[id="updateDescSalary"]').value;
+        if (!empId || !payDate) {
             form.setAttribute('class', 'was-validated');
+        } else if (!year) {
+            alertify.warning("لطفا سال را انتخاب نمایید.");
+        } else if (!month) {
+            alertify.warning("لطفا ماه را انتخاب نمایید.");
         } else {
             await fetchAPI.put("/Salary/UpdateSalary", form, forgeryToken, () => {
                 $('#salaryEditModal').modal('hide');

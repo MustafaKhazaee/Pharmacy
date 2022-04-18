@@ -1,5 +1,19 @@
 ﻿class FetchAPI {
 
+    async getJSON(url, key, callBack) {
+        const newURL = url + `?key=${key}`;
+        return await fetch(newURL, {
+            method: "get",
+        })
+        .then(response => {
+            if (response.status == 200) {
+                callBack.call();
+            }
+            return response.json();
+        })
+        .then(data => data).catch(error => console.error(error));
+    }
+
     async get(url) {
         return await fetch(url, {
             method: "get",

@@ -2,7 +2,7 @@
 using Domain.Common;
 
 namespace Application.ViewModels {
-    public class DataTableResult<T> where T : AuditableEntity {
+    public class DataTableResult<T> where T : class {
         public int Draw { get; set; }
         public int RecordsTotal { get; set; }
         public int RecordsFiltered { get; set; }

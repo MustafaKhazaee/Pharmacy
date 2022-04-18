@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Common {
     public class GenericService<T> : IGenericService<T> where T : AuditableEntity {
-        private readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext context;
         protected readonly IUnitOfWork unitOfWork;
         private readonly IHttpContextAccessor httpContextAccessor;
         public GenericService(ApplicationDbContext applicationDbContext, IHttpContextAccessor httpContextAccessor) {
@@ -31,7 +31,8 @@ namespace Infrastructure.Common {
             await context.SaveChangesAsync();
         }
         public async Task<int> CountAsync() => await Task.FromResult(context.Set<T>().Count(t => !t.IsDeleted));
-        public async Task<T> FindAsync(Guid Id) => await context.Set<T>().FindAsync(Id);
+        public async Task<T> FindAsync(Guid Id) => 
+            await context.Set<T>().FindAsync(Id);
         public async Task<IEnumerable<T>> GetAllAsync() => await Task.FromResult(context.Set<T>().ToList());
         public async Task RemoveAsync(Guid Id) {
             await Task.FromResult(context.Set<T>().Remove(await FindAsync(Id)));

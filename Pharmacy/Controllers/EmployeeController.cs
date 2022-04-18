@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebUI.Controllers {
     public class EmployeeController : BaseController {
         public EmployeeController (IApplicationServices applicationServices) : base (applicationServices) { }
+
         public async Task<IActionResult> Index() => await Task.FromResult(View());
 
         [HttpPost]
@@ -25,6 +26,10 @@ namespace WebUI.Controllers {
         [HttpGet]
         public async Task<IActionResult> GetUpdateModal (Guid id) => 
             await Task.FromResult(PartialView("UpdateEmployee", await services.EmployeeService.FindAsync(id)));
+
+        [HttpGet]
+        public async Task<SelectResult> GetList(string term) =>
+            await services.EmployeeService.GetList(term);
 
         [HttpPut]
         [ValidateAntiForgeryToken]

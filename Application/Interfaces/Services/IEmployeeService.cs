@@ -8,5 +8,6 @@ namespace Application.Interfaces.Services {
         public Task<Employee> SaveEmployee(EmployeeModel employeeModel);
         public Task<Employee> UpdateEmployee(EmployeeModel employeeModel);
         public Task<DataTableResult<Employee>> GetEmployeePage(DataTableParams param);
+        public Task<SelectResult> GetList (string key);
     }
 }
