@@ -34,7 +34,7 @@ namespace WebUI {
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Employee}/{action=Index}/{id?}");
+                    pattern: "{controller=AdminPanel}/{action=Index}/{id?}");
             });
         }
     }

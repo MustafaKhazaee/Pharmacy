@@ -171,12 +171,13 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MedicineId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BuyDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Count = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TotalPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BuyBill = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -188,6 +189,12 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Buys_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Buys_Medicines_MedicineId",
                         column: x => x.MedicineId,
@@ -206,7 +213,7 @@ namespace Persistence.Migrations
                     SellDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Count = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    SellBill = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -219,6 +226,12 @@ namespace Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Sells", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Sells_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Sells_Medicines_MedicineId",
                         column: x => x.MedicineId,
                         principalTable: "Medicines",
@@ -229,7 +242,12 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedBy", "CreatedDate", "DeletedBy", "DeletedDate", "Email", "IsDeleted", "IsLocked", "LastModifiedBy", "LastModifiedDate", "Password", "Role", "Salt", "UserName", "firstName", "lastName" },
-                values: new object[] { new Guid("5dc0ceed-6f19-46d7-898c-fafc4faae6a0"), "A", new DateTime(2022, 4, 16, 14, 46, 4, 506, DateTimeKind.Local).AddTicks(3351), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "4875395e06ca948c587439a75a7b3add1ac3673a25482505d662351ec9be3d3d", 0, "be91d9f44214f7d0c5322576cb022a74", "mustafa", "Mustafa", "Khazaee" });
+                values: new object[] { new Guid("d0abe570-d6d0-47da-a7b6-4e92ddc03a5a"), "A", new DateTime(2022, 4, 19, 14, 46, 26, 585, DateTimeKind.Local).AddTicks(3275), null, null, "mustafa.khazaee1@gmail.com", false, false, null, null, "00d83f4de3f88c667b15bdc022a62d2e9a140ed8f26f74961249e85f476b1085", 0, "00b255c14b513db6ce1867ffbc5c3a3b", "mustafa", "Mustafa", "Khazaee" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Buys_CompanyId",
+                table: "Buys",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buys_MedicineId",
@@ -240,6 +258,11 @@ namespace Persistence.Migrations
                 name: "IX_Salaries_EmployeeId",
                 table: "Salaries",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sells_CustomerId",
+                table: "Sells",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sells_MedicineId",
@@ -253,12 +276,6 @@ namespace Persistence.Migrations
                 name: "Buys");
 
             migrationBuilder.DropTable(
-                name: "Companies");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
                 name: "Salaries");
 
             migrationBuilder.DropTable(
@@ -268,7 +285,13 @@ namespace Persistence.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
+                name: "Companies");
+
+            migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Medicines");

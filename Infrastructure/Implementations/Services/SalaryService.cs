@@ -19,7 +19,7 @@ namespace Infrastructure.Implementations.Services {
                     month = s.Month,
                     year = s.Year,
                     remarks = s.Remarks
-                }).Skip(0).Take(10).ToList());
+                }).Skip(start).Take(length).ToList());
             return new DataTableResult<object> {
                 Data = list,
                 RecordsFiltered = all,

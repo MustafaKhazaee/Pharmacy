@@ -1,0 +1,314 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">خرید‌ها</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#buyModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="buyTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>شماره</th>
+                                <th>بل</th>
+                                <th>دوا</th>
+                                <th>کمپنی</th>
+                                <th>تاریخ</th>
+                                <th>تعداد</th>
+                                <th>قیمت مجموعی</th>
+                                <th>پرداخت شده</th>
+                                <th>توضیحات</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="buyModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="buyModalklHeader">ثبت خریداری</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="buyForm">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا ادویه را جستجو و انتخاب نمایید:</label>
+                                    <select name="medicineId" id="addBuyMedicineId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا کمپنی را جستجو و انتخاب نمایید:</label>
+                                    <select name="companyId" id="addBuyCompanyId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ خرید</label>
+                                    <input required id="addBuyDate" type="date" name="buyDate" class="form-control" placeholder="تاریخ خرید">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تاریخ خرید نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تعداد</label>
+                                    <input required id="addBuyCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>قیمت مجموعی</label>
+                                    <input required id="addBuyTotal" type="number" min="0" name="totalPrice" class="form-control" placeholder="قیمت مجموعی">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">قیمت مجموعی نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>پرداخت شده</label>
+                                    <input required id="addBuyPaid" type="number" min="0" name="totalPaid" class="form-control" placeholder="پرداخت شده">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">پرداخت شده نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>                            
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>بل</label>
+                                    <input type="file" accept="image/*" name="buyBill" class="form-control" placeholder="بل">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>توضیحات</label>
+                                    <input id="addDescBuy" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addBuy()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="buyEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش خرید</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="buyEditForm">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateBuy()" class="btn btn-primary">اعمال تغیرات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="seeBillModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="billModalBody" style="padding: 10px;">
+            </div>
+            <a data-bs-dismiss="modal" class="btn btn-primary">بستن</a>
+        </div>
+    </div>
+</div>
+@section Script {
+<script>
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    function addBuy () {
+        const form = document.querySelector('form[id="buyForm"]');
+        const medId = document.querySelector('select[id="addBuyMedicineId"]').selectedOptions[0].value;
+        const comId = document.querySelector('select[id="addBuyCompanyId"]').selectedOptions[0].value;
+        const buyDate = document.querySelector('input[id="addBuyDate"]').value;
+        const count = document.querySelector('input[id="addBuyCount"]').value;
+        const total = document.querySelector('input[id="addBuyTotal"]').value;
+        const paid = document.querySelector('input[id="addBuyPaid"]').value;
+
+        if (!medId || !comId || !buyDate || !count || !total || !paid) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.post("/Buy/AddBuy", form, forgeryToken, () => {
+                $('#buyModal').modal('hide');
+                form.reset();
+                form[0].innerHTML = "";
+                form[1].innerHTML = "";
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        const s = $("#addBuyMedicineId");
+	    s.select2({
+            tags: true,
+            dropdownParent: s.parent(),
+            ajax: { url: "/Medicine/GetList/" }
+        });
+    });
+    $(document).ready(function() {
+        const s1 = $("#addBuyCompanyId");
+	    s1.select2({
+            tags: true,
+            dropdownParent: s1.parent(),
+            ajax: { url: "/Company/GetList/" }
+        });
+    });
+    function seeBill (url) {
+        document.querySelector('div[id="billModalBody"]').innerHTML = `<img class="billPic" src="${url}" />`;
+        $('#seeBillModal').modal('show');
+    }
+    const k = $('#buyTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        searching: { regex: false },
+        ajax: {
+            url: "/Buy/GetBuy",
+            type: "POST",
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
+        },
+        columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { 
+                data: "buyBill",
+                render: function (data, type, row) {
+                    if (data) {
+                        const a = data.replaceAll("\\", "\\\\").substring(data.indexOf("\\images")+4);
+                        return `<button class="btn btn-sm btn-success" onclick="seeBill('${a}')">دیدن</button>`;
+                    }
+                    return `<button class="btn btn-sm btn-secondary">ندارد</button>`;
+                }            
+            },
+            { data: "name", name: "name" },
+            { data: "companyName", name: "companyName" },
+            { 
+                data: "date",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            { data: "count", name: "count" },
+            { data: "totalPrice", name: "totalPrice" },
+            { data: "totalPaid", name: "totalPaid" },
+            { data: "remarks", name: "remarks" },
+            {
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editBuy('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteBuy('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            }
+        ]
+    });
+
+    async function editBuy (buyId) {
+        const d = await fetchAPI.getUpdateModal("/Buy/GetUpdateModal", buyId, () => {
+            $('#buyEditModal').modal('show');
+        });
+        document.querySelector('form[id="buyEditForm"]').innerHTML = d;
+        
+        const su = $("#updateBuyMedicineId");
+	    su.select2({
+            tags: true,
+            dropdownParent: su.parent(),
+            ajax: { url: "/Medicine/GetList/" }
+        });
+        const su1 = $("#updateBuyCompanyId");
+	    su1.select2({
+            tags: true,
+            dropdownParent: su1.parent(),
+            ajax: { url: "/Company/GetList/" }
+        });
+    }
+
+    deleteBuy = (buyId) => alertify.confirm("حذف خرید", "میخواهد حذف شود؟", () => {
+        fetchAPI.delete("/Buy/DeleteBuy", buyId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+    
+    async function updateBuy () {
+        const form = document.querySelector('form[id="buyEditForm"]');
+        const medId = document.querySelector('select[id="updateBuyMedicineId"]').selectedOptions[0].value;
+        const comId = document.querySelector('select[id="updateBuyCompanyId"]').selectedOptions[0].value;
+        const buyDate = document.querySelector('input[id="updateBuyDate"]').value;
+        const count = document.querySelector('input[id="updateBuyCount"]').value;
+        const total = document.querySelector('input[id="updateBuyTotal"]').value;
+        const paid = document.querySelector('input[id="updateBuyPaid"]').value;
+
+        if (!medId || !comId || !buyDate || !count || !total || !paid) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.put("/Buy/UpdateBuy", form, forgeryToken, () => {
+                $('#buyEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+</script>
+}

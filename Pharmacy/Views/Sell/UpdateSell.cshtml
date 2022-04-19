@@ -1,0 +1,53 @@
+﻿@model Domain.Entities.Sell
+@{
+    string a = Model.SellDate.ToString("yyyy-MM-dd");
+}
+<div class="row">
+     <input value="@Model.Id" id="updateid" hidden type="text" name="id" class="form-control" placeholder="نام">
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>لطفا ادویه را جستجو و انتخاب نمایید:</label>
+            <select name="medicineId" id="updateSellMedicineId">
+                <!option value="@Model.Medicine.Id">@Model.Medicine.Name (@Model.Medicine.Category @Model.Medicine.Category)</!option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>لطفا مشتری را جستجو و انتخاب نمایید:</label>
+            <select name="customerId" id="updateSellCustomerId">
+                <!option value="@Model.Customer.Id">@Model.Customer.FirstName @Model.Customer.LastName @Model.Customer.Mobile)</!option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تاریخ خرید</label>
+            <input value="@a" required id="updateSellDate" type="date" name="sellDate" class="form-control" placeholder="تاریخ خرید">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تاریخ خرید نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تعداد</label>
+            <input value="@Model.Count" required id="updateSellCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>قیمت مجموعی</label>
+            <input value="@Model.TotalPrice" required id="updateSellTotal" type="number" min="0" name="totalPrice" class="form-control" placeholder="قیمت مجموعی">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">قیمت مجموعی نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>توضیحات</label>
+            <input value="@Model.Remarks" id="updateDescSell" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,275 @@
+﻿<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">فروشات</h3>
+        </div>
+        <div class="col-auto">
+            <button onclick="$('#sellModal').modal('show')" class="btn btn-success me-1">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="sellTable" class="table table-center table-hover table-responsive-sm table-stripped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>شماره</th>
+                                <th>دوا</th>
+                                <th>مشتری</th>
+                                <th>تاریخ</th>
+                                <th>تعداد</th>
+                                <th>قیمت مجموعی</th>
+                                <th>توضیحات</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="sellModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="sellModalklHeader">ثبت فروشات</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="sellForm">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا ادویه را جستجو و انتخاب نمایید:</label>
+                                    <select name="medicineId" id="addSellMedicineId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا مشتری را جستجو و انتخاب نمایید:</label>
+                                    <select name="customerId" id="addSellCustomerId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تاریخ فروش</label>
+                                    <input required id="addSellDate" type="date" name="sellDate" class="form-control" placeholder="تاریخ فروش">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تاریخ فروش نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>تعداد</label>
+                                    <input required id="addSellCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>قیمت مجموعی</label>
+                                    <input required id="addSellTotal" type="number" min="0" name="totalPrice" class="form-control" placeholder="قیمت مجموعی">
+                                    <div class="valid-feedback">پر شد</div>
+                                    <div class="invalid-feedback">قیمت مجموعی نمیتواند خالی باشد!</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>توضیحات</label>
+                                    <input id="addDescSell" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="addSell()" class="btn btn-primary">ثبت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="sellEditModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" >ویرایش فروش</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="sellEditForm">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a href="javascript:void(0);" data-bs-dismiss="modal"
+                        class="btn btn-warning">بستن</a>
+                    <a onclick="updateSell()" class="btn btn-primary">اعمال تغیرات</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script {
+<script>
+    var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    function addSell () {
+        const form = document.querySelector('form[id="sellForm"]');
+        const medId = document.querySelector('select[id="addSellMedicineId"]').selectedOptions[0].value;
+        const cusId = document.querySelector('select[id="addSellCustomerId"]').selectedOptions[0].value;
+        const sellDate = document.querySelector('input[id="addSellDate"]').value;
+        const count = document.querySelector('input[id="addSellCount"]').value;
+        const total = document.querySelector('input[id="addSellTotal"]').value;
+
+        if (!medId || !cusId || !sellDate || !count || !total) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.post("/Sell/AddSell", form, forgeryToken, () => {
+                $('#sellModal').modal('hide');
+                form.reset();
+                form[0].innerHTML = "";
+                form[1].innerHTML = "";
+                k.fnDraw(false);
+                alertify.success("ثبت شد");
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        const s = $("#addSellMedicineId");
+	    s.select2({
+            tags: true,
+            dropdownParent: s.parent(),
+            ajax: { url: "/Medicine/GetList/" }
+        });
+    });
+    $(document).ready(function() {
+        const s1 = $("#addSellCustomerId");
+	    s1.select2({
+            tags: true,
+            dropdownParent: s1.parent(),
+            ajax: { url: "/Customer/GetList/" }
+        });
+    });
+
+    const k = $('#sellTable').dataTable({
+        stateSave: true,
+        autoWidth: true,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        searching: { regex: false },
+        ajax: {
+            url: "/Sell/GetSell",
+            type: "POST",
+            headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken}
+        },
+        columns: [
+            {
+                data: "id",
+                render: function (date, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            { data: "name", name: "name" },
+            { data: "customerName", name: "customerName" },
+            { 
+                data: "date",
+                render: function (a) {
+                    if (a) {
+                        return a.substring(0, a.indexOf("T"));
+                    }
+                    return "";
+                }
+            },
+            { data: "count", name: "count" },
+            { data: "totalPrice", name: "totalPrice" },
+            { data: "remarks", name: "remarks" },
+            {
+                data: "id",
+                render: function (raw) {
+                    return `<button onclick="editSell('${raw}')" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</button>` +
+                        `<button onclick="deleteSell('${raw}')" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i> Delete</button>`;
+                }
+            }
+        ]
+    });
+
+    async function editSell (sellId) {
+        const d = await fetchAPI.getUpdateModal("/Sell/GetUpdateModal", sellId, () => {
+            $('#sellEditModal').modal('show');
+        });
+        document.querySelector('form[id="sellEditForm"]').innerHTML = d;
+        
+        const su = $("#updateSellMedicineId");
+	    su.select2({
+            tags: true,
+            dropdownParent: su.parent(),
+            ajax: { url: "/Medicine/GetList/" }
+        });
+
+        const su1 = $("#updateSellCustomerId");
+	    su1.select2({
+            tags: true,
+            dropdownParent: su1.parent(),
+            ajax: { url: "/Customer/GetList/" }
+        });
+    }
+
+    deleteSell = (sellId) => alertify.confirm("حذف فروش", "میخواهد حذف شود؟", () => {
+        fetchAPI.delete("/Sell/DeleteSell", sellId, forgeryToken, () => {
+            k.fnDraw(false);
+            alertify.success("حذف شد");
+        });        
+    }, () => {
+        alertify.error("عملیات متوقف شد");
+    });
+    
+    async function updateSell () {
+        const form = document.querySelector('form[id="sellEditForm"]');
+        const medId = document.querySelector('select[id="updateSellMedicineId"]').selectedOptions[0].value;
+        const cusId = document.querySelector('select[id="updateSellCustomerId"]').selectedOptions[0].value;
+        const sellDate = document.querySelector('input[id="updateSellDate"]').value;
+        const count = document.querySelector('input[id="updateSellCount"]').value;
+        const total = document.querySelector('input[id="updateSellTotal"]').value;
+
+        if (!medId || !cusId || !sellDate || !count || !total) {
+            form.setAttribute('class', 'was-validated');
+        } else {
+            fetchAPI.put("/Sell/UpdateSell", form, forgeryToken, () => {
+                $('#sellEditModal').modal('hide');
+                form.reset();
+                k.fnDraw(false);
+                alertify.success("تغیرات اعمال شد");
+            });
+        }
+    }
+</script>
+}

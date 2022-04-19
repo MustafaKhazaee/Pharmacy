@@ -26,6 +26,10 @@ namespace WebUI.Controllers {
         public async Task<IActionResult> GetUpdateModal (Guid id) => 
             await Task.FromResult(PartialView("UpdateMedicine", await services.MedicineService.FindAsync(id)));
 
+        [HttpGet]
+        public async Task<SelectResult> GetList(string term) =>
+            await services.MedicineService.GetList(term);
+
         [HttpPut]
         [ValidateAntiForgeryToken]
         public async Task<Medicine> UpdateMedicine([FromForm] MedicineModel medicine) =>

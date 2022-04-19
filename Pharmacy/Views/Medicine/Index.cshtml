@@ -251,23 +251,9 @@
             { data: "name", name: "name" },
             { data: "manufacturingCompany", name: "manufacturingCompany" },
             { data: "description", name: "description" },
-            { 
-                data: "type",
-                render: function (raw) {
-                    console.log(raw);
-                    const types = ["Injection", "Tablet", "Syrup"];
-                    return types[raw];
-                }
-            },
+            { data: "type", name: "type" },
             { data: "count", name: "count" },
-            { 
-                data: "category",
-                render: function (raw) {
-                    console.log(raw);
-                    const category = ["Antibiotics", "Vitamine"];
-                    return category[raw];
-                }
-            },
+            { data: "category", name: "category" },
             { 
                 data: "manufacturingDate",
                 render: function (a) {

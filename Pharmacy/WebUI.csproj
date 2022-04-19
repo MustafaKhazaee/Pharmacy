@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\medicine\small\" />
     <Folder Include="wwwroot\images\medicine\original\" />
+    <Folder Include="wwwroot\images\buyBills\" />
   </ItemGroup>
 
 </Project>

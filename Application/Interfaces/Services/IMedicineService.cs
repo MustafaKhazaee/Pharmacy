@@ -8,5 +8,6 @@ namespace Application.Interfaces.Services {
         public Task<Medicine> SaveMedicine(MedicineModel medicineModel);
         public Task<Medicine> UpdateMedicine(MedicineModel medicineModel);
         public Task<DataTableResult<Medicine>> GetMedicinePage(DataTableParams param);
+        public Task<SelectResult> GetList(string key);
     }
 }

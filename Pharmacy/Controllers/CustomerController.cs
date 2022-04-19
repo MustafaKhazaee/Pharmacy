@@ -30,5 +30,9 @@ namespace WebUI.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<Customer> UpdateCustomer([FromForm] Customer customer) =>
             (Customer) await services.CustomerService.UpdateAsync(customer);
+
+        [HttpGet]
+        public async Task<SelectResult> GetList(string term) =>
+            await services.CustomerService.GetList(term);
     }
 }   

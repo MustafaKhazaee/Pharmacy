@@ -1,0 +1,67 @@
+﻿@model Domain.Entities.Buy
+@{
+    string a = Model.BuyDate.ToString("yyyy-MM-dd");
+}
+<div class="row">
+     <input value="@Model.Id" id="updateid" hidden type="text" name="id" class="form-control" placeholder="نام">
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>لطفا ادویه را جستجو و انتخاب نمایید:</label>
+            <select name="medicineId" id="updateBuyMedicineId">
+                <!option value="@Model.Medicine.Id">@Model.Medicine.Name (@Model.Medicine.Category @Model.Medicine.Category)</!option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>لطفا کمپنی را جستجو و انتخاب نمایید:</label>
+            <select name="companyId" id="updateBuyCompanyId">
+                <!option value="@Model.Company.Id">@Model.Company.Name</!option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تاریخ خرید</label>
+            <input required id="updateBuyDate" value="@a" type="date" name="buyDate" class="form-control" placeholder="تاریخ خرید">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تاریخ خرید نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>تعداد</label>
+            <input required value="@Model.Count" id="updateBuyCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>قیمت مجموعی</label>
+            <input required value="@Model.TotalPrice" id="updateBuyTotal" type="number" min="0" name="totalPrice" class="form-control" placeholder="قیمت مجموعی">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">قیمت مجموعی نمیتواند خالی باشد!</div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>پرداخت شده</label>
+            <input required value="@Model.TotalPaid" id="updateBuyPaid" type="number" min="0" name="totalPaid" class="form-control" placeholder="پرداخت شده">
+            <div class="valid-feedback">پر شد</div>
+            <div class="invalid-feedback">پرداخت شده نمیتواند خالی باشد!</div>
+        </div>
+    </div>                            
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+            <label>بل</label>
+            <input type="file" accept="image/*" name="buyBill" class="form-control" placeholder="بل">
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="form-group">
+            <label>توضیحات</label>
+            <input value="@Model.Remarks" id="updateDescBuy" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+        </div>
+    </div>
+</div>

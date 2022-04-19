@@ -32,12 +32,15 @@ namespace Infrastructure.Implementations.Services {
             return paths;
         }
 
-        public string SavePicture(IFormFile file) {
-            string path = null;
+        public string SavePicture(IFormFile file, string path) {
             if (file == null)
                 return null;
-
-            return path;
+            string rootPath = Path.GetFullPath("wwwroot");
+            string filepathOrginial = Path.Combine(rootPath, $"images\\{path}\\", file.FileName);
+            using (Stream fileStream = new FileStream(filepathOrginial, FileMode.Create, FileAccess.Write)) {
+                file.CopyTo(fileStream);
+            }
+            return filepathOrginial;
         }
     }
 }

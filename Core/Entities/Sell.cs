@@ -9,6 +9,7 @@ namespace Domain.Entities {
         public DateTime SellDate { get; set; }
         public decimal Count { get; set; }
         public decimal TotalPrice { get; set; }
-        public string? SellBill { get; set; }
+        public Guid CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

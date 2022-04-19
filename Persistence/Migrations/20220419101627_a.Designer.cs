@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220416101605_a")]
+    [Migration("20220419101627_a")]
     partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("BuyDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Count")
                         .HasColumnType("decimal(18,2)");
@@ -73,6 +76,8 @@ namespace Persistence.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("MedicineId");
 
@@ -363,6 +368,9 @@ namespace Persistence.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -384,9 +392,6 @@ namespace Persistence.Migrations
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SellBill")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("SellDate")
                         .HasColumnType("datetime2");
 
@@ -394,6 +399,8 @@ namespace Persistence.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("MedicineId");
 
@@ -463,15 +470,15 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5dc0ceed-6f19-46d7-898c-fafc4faae6a0"),
+                            Id = new Guid("d0abe570-d6d0-47da-a7b6-4e92ddc03a5a"),
                             CreatedBy = "A",
-                            CreatedDate = new DateTime(2022, 4, 16, 14, 46, 4, 506, DateTimeKind.Local).AddTicks(3351),
+                            CreatedDate = new DateTime(2022, 4, 19, 14, 46, 26, 585, DateTimeKind.Local).AddTicks(3275),
                             Email = "mustafa.khazaee1@gmail.com",
                             IsDeleted = false,
                             IsLocked = false,
-                            Password = "4875395e06ca948c587439a75a7b3add1ac3673a25482505d662351ec9be3d3d",
+                            Password = "00d83f4de3f88c667b15bdc022a62d2e9a140ed8f26f74961249e85f476b1085",
                             Role = 0,
-                            Salt = "be91d9f44214f7d0c5322576cb022a74",
+                            Salt = "00b255c14b513db6ce1867ffbc5c3a3b",
                             UserName = "mustafa",
                             firstName = "Mustafa",
                             lastName = "Khazaee"
@@ -480,11 +487,19 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Buy", b =>
                 {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Medicine", "Medicine")
                         .WithMany("Buys")
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Company");
 
                     b.Navigation("Medicine");
                 });
@@ -502,11 +517,19 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Sell", b =>
                 {
+                    b.HasOne("Domain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Medicine", "Medicine")
                         .WithMany("Sells")
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Medicine");
                 });

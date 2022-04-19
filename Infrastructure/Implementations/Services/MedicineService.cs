@@ -50,6 +50,15 @@ namespace Infrastructure.Implementations.Services {
             return (Medicine)await UpdateAsync(medicine);
         }
 
+        public async Task<SelectResult> GetList(string key) {
+            List<object> list = new List<object>();
+            (await FindAllAsync(e => e.Name.Contains(key) || e.Description.Contains(key) || key == null, 0, 10))
+                .ToList().ForEach(e => list.Add(new { id = e.Id, text = $"{e.Name} ({e.Type} {e.Category})" }));
+            return new SelectResult {
+                results = list
+            };
+        }
+
         private Medicine ViewModelToEntity(MedicineModel medicineModel, string[] ph) => new Medicine {
             Name = medicineModel.Name,
             SellProfitPercent = medicineModel.SellProfitPercent,
