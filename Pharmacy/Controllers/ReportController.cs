@@ -9,5 +9,9 @@ namespace WebUI.Controllers {
         public async Task<IActionResult> Sell () => await Task.FromResult(View());
         public async Task<IActionResult> Buy () => await Task.FromResult(View());
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<DataTableResult<object>> BuyReport (BuyReportModel buyReportModel) =>
+            await services.BuyService.GetBuyReport(buyReportModel);
     }
 }   

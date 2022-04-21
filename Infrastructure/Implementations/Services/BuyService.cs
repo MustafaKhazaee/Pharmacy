@@ -4,6 +4,7 @@ using Application.ViewModels;
 using Domain.Entities;
 using Infrastructure.Common;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Infrastructure.Implementations.Services {
@@ -31,6 +32,49 @@ namespace Infrastructure.Implementations.Services {
                 RecordsFiltered = all,
                 RecordsTotal = all,
                 Draw = param.Draw
+            };
+        }
+
+        public async Task<DataTableResult<object>> GetBuyReport(BuyReportModel buyReportModel) {
+            DateTime? fromDate = buyReportModel.fromDate, toDate = buyReportModel.toDate;
+            Guid? comId = buyReportModel.companyId, medId = buyReportModel.medicineId;
+            int count = await CountAsync();
+            List<object> list = context.Buys.Where(b => (comId == null || comId == b.CompanyId) &&
+                            (medId == null || medId == b.MedicineId) &&
+                            (fromDate == null || fromDate <= b.BuyDate) &&
+                            (toDate == null || toDate >= b.BuyDate)
+                 )
+                .GroupBy(b => new {
+                    comName = b.Company.Name,
+                    medName = b.Medicine.Name,
+                    medType = b.Medicine.Type,
+                    medCat = b.Medicine.Category
+                })
+               .Select(b => new {
+                   totalPrice = b.Sum(b => b.TotalPrice),
+                   totalPaid = b.Sum(b => b.TotalPaid),
+                   totalRemain = b.Sum(b => b.TotalPrice) - b.Sum(b => b.TotalPaid),
+                   company = b.Key.comName,
+                   medicine = $"{b.Key.medName} ({b.Key.medType} {b.Key.medCat})"
+               }).ToList<object>();
+            int totalPrice = 0, totalPaid = 0, totalRemain = 0;
+            foreach (dynamic i in list) {
+                totalPrice += i.totalPrice;
+                totalPaid += i.totalPaid;
+                totalRemain += i.totalRemain;
+            }
+            list.Add(new {
+                company = "",
+                medicine = "مجموعه",
+                totalPrice = totalPrice,
+                totalPaid = totalPaid,
+                totalRemain = totalRemain
+            });
+            return new DataTableResult<object> {
+                Data = list,
+                RecordsFiltered = list.Count(),
+                RecordsTotal = list.Count(),
+                Draw = 1
             };
         }
 
