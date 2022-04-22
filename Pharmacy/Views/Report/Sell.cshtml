@@ -3,6 +3,11 @@
         <div class="col">
             <h3 class="page-title">روزنامچه فروشات</h3>
         </div>
+        <div class="col-auto">
+            <button class="btn btn-success" onclick="printTable()">Print
+                <i data-feather="printer"></i>
+            </button>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -37,7 +42,7 @@
                         </div>
                     </div>
                 </!form>
-                <div class="table-responsive">
+                <div id="printableDiv" class="table-responsive">
                     <table id="sellTable" class="table table-center table-hover table-responsive-sm table-stripped">
                         <thead class="thead-light">
                             <tr>
@@ -57,6 +62,24 @@
 </div>
 @section Script {
 <script>
+    function printTable () {
+        const div = document.querySelector('div[id="printableDiv"]');
+        const myWindow = window.open('', 'PRINT', 'height=600,width=1400');
+        const head = document.querySelector('head');
+        myWindow.document.write('<html><head>');
+        myWindow.document.write(head.innerHTML);
+        myWindow.document.write('</head><body style="margin: 20px; padding: 10px;">');
+        myWindow.document.write(div.innerHTML);
+        myWindow.document.write('</body></html>');
+        setTimeout(() => {
+            const toHide = myWindow.document.querySelectorAll('#sellTable_wrapper > div:nth-child(odd)');
+            for (let i = 0; i < toHide.length; i++) {
+                console.log(toHide[i]);
+                toHide[i].style = "display: none;";
+            }
+        }, 1200);
+        return true;
+    }
     var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
     $(document).ready(function() {
         const s = $("#addSellMedicineId");
@@ -114,12 +137,6 @@
                 { data: "customer", name: "customer" },
                 { data: "medicine", name: "medicine" },
                 { data: "totalPrice", name: "totalPrice" },
-            ],
-            buttons: [
-                {
-                    extend: 'print',
-                    text: 'پرینت',
-                }
             ]
         });
     }
