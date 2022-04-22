@@ -5,8 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers {
     public class AdminPanelController : BaseController {
-        public AdminPanelController(IApplicationServices applicationServices) : base(applicationServices) { }
-        public async Task<IActionResult> Index () => await Task.FromResult(View());
+        public AdminPanelController (IApplicationServices applicationServices) : base (applicationServices) { }
+        public async Task<IActionResult> Index() {
+            ViewBag.company = await services.CompanyService.CountAsync();
+            ViewBag.employee = await services.EmployeeService.CountAsync();
+            ViewBag.medicine = await services.MedicineService.CountAsync();
+            ViewBag.sell = await services.SellService.CountAsync();
+            return await Task.FromResult(View()); 
+        }
         public async Task<string> GetUserName() => await Task.FromResult(HttpContext.User.Identity.Name);
 
         [AllowAnonymous]

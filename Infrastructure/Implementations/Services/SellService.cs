@@ -30,6 +30,44 @@ namespace Infrastructure.Implementations.Services {
             };
         }
 
+        public async Task<DataTableResult<object>> GetSellReport(SellReportModel sellReportModel) {
+            DateTime? fromDate = sellReportModel.fromDate, toDate = sellReportModel.toDate;
+            Guid? comId = sellReportModel.customerId, medId = sellReportModel.medicineId;
+            int count = await CountAsync();
+            List<object> list = context.Sells.Where(b => (comId == null || comId == b.CustomerId) &&
+                            (medId == null || medId == b.MedicineId) &&
+                            (fromDate == null || fromDate <= b.SellDate) &&
+                            (toDate == null || toDate >= b.SellDate)
+                 )
+                .GroupBy(b => new {
+                    cFirstName = b.Customer.FirstName,
+                    cLastName = b.Customer.LastName,
+                    medName = b.Medicine.Name,
+                    medType = b.Medicine.Type,
+                    medCat = b.Medicine.Category
+                })
+               .Select(b => new {
+                   totalPrice = b.Sum(b => b.TotalPrice),
+                   customer = $"{b.Key.cFirstName} {b.Key.cLastName}",
+                   medicine = $"{b.Key.medName} ({b.Key.medType} {b.Key.medCat})"
+               }).ToList<object>();
+            int totalPrice = 0;
+            foreach (dynamic i in list) {
+                totalPrice += i.totalPrice;
+            }
+            list.Add(new {
+                customer = "",
+                medicine = "مجموعه",
+                totalPrice = totalPrice
+            });
+            return new DataTableResult<object> {
+                Data = list,
+                RecordsFiltered = list.Count(),
+                RecordsTotal = list.Count(),
+                Draw = 1
+            };
+        }
+
         public async Task<Sell> SaveSell(SellModel sellModel) {
             Sell sell = ViewModelToEntity(sellModel);
             return (Sell) await AddAsync(sell);

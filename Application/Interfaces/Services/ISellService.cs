@@ -8,5 +8,6 @@ namespace Application.Interfaces.Services {
         public Task<Sell> SaveSell(SellModel sellModel);
         public Task<Sell> UpdateSell(SellModel sellModel);
         public Task<DataTableResult<object>> GetSellPage(DataTableParams param);
+        public Task<DataTableResult<object>> GetSellReport(SellReportModel sellReportModel);
     }
 }

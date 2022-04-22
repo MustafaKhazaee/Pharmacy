@@ -13,5 +13,10 @@ namespace WebUI.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<DataTableResult<object>> BuyReport (BuyReportModel buyReportModel) =>
             await services.BuyService.GetBuyReport(buyReportModel);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<DataTableResult<object>> SellReport (SellReportModel sellReportModel) =>
+            await services.SellService.GetSellReport(sellReportModel);
     }
 }   

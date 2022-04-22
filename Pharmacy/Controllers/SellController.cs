@@ -23,10 +23,6 @@ namespace WebUI.Controllers {
         public async Task<Sell> DeleteSell(Guid id) => await services.SellService.SoftDeleteAsync(id);
 
         [HttpGet]
-        public async Task<IActionResult> GetUpdateModal (Guid id) => 
-            await Task.FromResult(PartialView("UpdateSell", await services.SellService.FindAsync(id)));
-        
-        [HttpGet]
         public async Task<IActionResult> PrintBill(Guid id) => 
             await Task.FromResult(PartialView("SellBillPrint", await services.SellService.FindAsync(id)));
 
