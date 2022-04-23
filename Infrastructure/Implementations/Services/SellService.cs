@@ -67,7 +67,6 @@ namespace Infrastructure.Implementations.Services {
                 Draw = 1
             };
         }
-
         public async Task<Sell> SaveSell(SellModel sellModel) {
             Sell sell = ViewModelToEntity(sellModel);
             return (Sell) await AddAsync(sell);

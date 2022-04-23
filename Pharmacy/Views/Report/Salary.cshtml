@@ -1,7 +1,7 @@
 ﻿<div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">روزنامچه خریداری</h3>
+            <h3 class="page-title">روزنامچه معاشات</h3>
         </div>
         <div class="col-auto">
             <button class="btn btn-success" onclick="printTable()">Print
@@ -30,14 +30,52 @@
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
-                                <label>کمپنی</label>
-                                <select name="companyId" id="addBuyCompanyId"></select>
+                                <label>کارمند</label>
+                                <select name="employeeId" id="addSalaryCompanyId"></select>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
-                                <label>دوا</label>
-                                <select name="medicineId" id="addBuyMedicineId"></select>
+                                <label>سال</label>
+                                <select name="year" id="addSalaryYear" class="form-select">
+                                    <option value="-1">انتخاب نمایید</option>
+                                    <option value="1400">1400</option>
+                                    <option value="1401">1401</option>
+                                    <option value="1402">1402</option>
+                                    <option value="1403">1403</option>
+                                    <option value="1404">1404</option>
+                                    <option value="1405">1405</option>
+                                    <option value="1406">1406</option>
+                                    <option value="1407">1407</option>
+                                    <option value="1408">1408</option>
+                                    <option value="1409">1409</option>
+                                    <option value="1410">1410</option>
+                                    <option value="1411">1411</option>
+                                    <option value="1412">1412</option>
+                                    <option value="1413">1413</option>
+                                    <option value="1414">1414</option>
+                                    <option value="1415">1415</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label>ماه</label>
+                                <select name="month" id="addSalaryMonth" class="form-select">
+                                    <option value="0">انتخاب نمایید</option>
+                                    <option value="1">حمل</option>
+                                    <option value="2">ثور</option>
+                                    <option value="3">جوزا</option>
+                                    <option value="4">سرطان</option>
+                                    <option value="5">اسد</option>
+                                    <option value="6">سنبله</option>
+                                    <option value="7">میزان</option>
+                                    <option value="8">عقرب</option>
+                                    <option value="9">قوس</option>
+                                    <option value="10">جدی</option>
+                                    <option value="11">دلو</option>
+                                    <option value="12">حوت</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -47,11 +85,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>شماره</th>
-                                <th>کمپنی</th>
-                                <th>دوا</th>
-                                <th>قیمت مجموعی</th>
+                                <th>سال</th>
+                                <th>ماه</th>
+                                <th>کارمند</th>
                                 <th>پرداخت شده</th>
-                                <th>مجموع باقی</th>
                             </tr>
                         </thead>
                         <tbody >
@@ -73,7 +110,7 @@
         myWindow.document.write('<html><head>');
         myWindow.document.write(head.innerHTML);
         myWindow.document.write(`</head><body style="margin: 10px; padding: 10px; text-align: center;">
-            <h4 style="text-align: center;">راپور خریداری از تاریخ ${fromDate} تا تاریخ ${toDate}</h4>`);
+            <h4 style="text-align: center;">راپور معاشات از تاریخ ${fromDate} تا تاریخ ${toDate}</h4>`);
         myWindow.document.write(div.innerHTML);
         myWindow.document.write('</body></html>');
         setTimeout(() => {
@@ -86,28 +123,31 @@
         }, 1200);
         return true;
     }
+    const months = {
+        "Hamal": "حمل",
+        "Sawr": "ثور",
+        "Jawza": "جوزا",
+        "Saratan": "سرطان",
+        "Asad": "اسد",
+        "Sunbula": "سنبله",
+        "Mizan": "میزان",
+        "Aqrab": "عقرب",
+        "Qaws": "قوس",
+        "Jadi": "جدی",
+        "Dalwa": "دلو",
+        "Hoot": "حوت"
+    };
     var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
     $(document).ready(function() {
-        const s = $("#addBuyMedicineId");
-        const s1 = $("#addBuyCompanyId");
+        const s = $("#addSalaryCompanyId");
 	    s.select2({
             tags: true,
             dropdownParent: s.parent(),
-            ajax: { url: "/Medicine/GetList/" }
-        });
-	    s1.select2({
-            tags: true,
-            dropdownParent: s1.parent(),
-            ajax: { url: "/Company/GetList/" }
+            ajax: { url: "/Employee/GetList/" }
         });
         $(s).on('select2:select', function (e) {
             const medId = e.params.data.id;
             console.log(medId);
-            getReport();
-        });
-        $(s1).on('select2:select', function (e) {
-            const comId = e.params.data.id;
-            console.log(comId);
             getReport();
         });
     });
@@ -127,7 +167,7 @@
             paging: true,
             searching: { regex: false },
             ajax: {
-                url: "/Report/BuyReport",
+                url: "/Report/SalaryReport",
                 type: "POST",
                 dataType: "JSON",
                 headers: {"PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken},
@@ -135,16 +175,22 @@
             },
             columns: [
                 {
-                    data: "totalPrice",
+                    data: "amount",
                     render: function (date, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                { data: "company", name: "company" },
-                { data: "medicine", name: "medicine" },
-                { data: "totalPrice", name: "totalPrice" },
-                { data: "totalPaid", name: "totalPaid" },
-                { data: "totalRemain", name: "totalRemain" },
+                { data: "year", name: "year" },
+                { 
+                    data: "month",
+                    render: function (raw) {
+                        if (raw)
+                            return months[raw];
+                        return "";
+                    }
+                },
+                { data: "employee", name: "employee" },
+                { data: "amount", name: "amount" },
             ]
         });
     }
