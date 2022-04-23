@@ -65,12 +65,15 @@
 @section Script {
 <script>
     function printTable () {
+        const fromDate = document.querySelector('input[name="fromDate"]').value;
+        const toDate = document.querySelector('input[name="toDate"]').value;
         const div = document.querySelector('div[id="printableDiv"]');
         const myWindow = window.open('', 'PRINT', 'height=600,width=1400');
         const head = document.querySelector('head');
         myWindow.document.write('<html><head>');
         myWindow.document.write(head.innerHTML);
-        myWindow.document.write('</head><body style="margin: 20px; padding: 10px;">');
+        myWindow.document.write(`</head><body style="margin: 10px; padding: 10px; text-align: center;">
+            <h4 style="text-align: center;">راپور خریداری از تاریخ ${fromDate} تا تاریخ ${toDate}</h4>`);
         myWindow.document.write(div.innerHTML);
         myWindow.document.write('</body></html>');
         setTimeout(() => {
@@ -79,6 +82,8 @@
                 console.log(toHide[i]);
                 toHide[i].style = "display: none;";
             }
+            myWindow.print();
+            myWindow.close();
         }, 1200);
         return true;
     }
