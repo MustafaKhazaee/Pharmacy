@@ -20,7 +20,7 @@ namespace WebUI.Controllers {
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
-        public async Task<Buy> DeleteBuy(Guid id) => await services.BuyService.SoftDeleteAsync(id);
+        public async Task<Buy> DeleteBuy(Guid id) => await services.BuyService.SoftDeleteBuyAsync(id);
 
         [HttpGet]
         public async Task<IActionResult> GetUpdateModal (Guid id) => 

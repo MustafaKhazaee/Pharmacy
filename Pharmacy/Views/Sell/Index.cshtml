@@ -136,11 +136,10 @@
         </div>
     </div>
 </div>
-
 @section Script {
 <script>
     var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
-    function addSell () {
+async function addSell () {
         const form = document.querySelector('form[id="sellForm"]');
         const medId = document.querySelector('select[id="addSellMedicineId"]').selectedOptions[0].value;
         const cusId = document.querySelector('select[id="addSellCustomerId"]').selectedOptions[0].value;
@@ -151,23 +150,41 @@
         if (!medId || !cusId || !sellDate || !count || !total) {
             form.setAttribute('class', 'was-validated');
         } else {
-            fetchAPI.post("/Sell/AddSell", form, forgeryToken, () => {
+            const d = await fetchAPI.post("/Sell/AddSell", form, forgeryToken, () => {
                 $('#sellModal').modal('hide');
                 form.reset();
                 form[0].innerHTML = "";
                 form[1].innerHTML = "";
                 k.fnDraw(false);
-                alertify.success("ثبت شد");
             });
+            if (d.remarks === 'Not enough medicine') {
+                alertify.error("دوای کافی موجود نیست");
+            } else {
+                alertify.success("اضافه شد");
+            }
         }
     }
-
+    const medicinePrices = {};
+    const totalInput = document.querySelector('input[id="addSellTotal"]');
+    const countInput = document.querySelector('input[id="addSellCount"]');
+    const medSelect = document.querySelector('select[id="addSellMedicineId"]');
+    countInput.addEventListener('input', (event) => {
+        const count = Number(event.currentTarget.value);
+        const medId = medSelect.selectedOptions[0].value;
+        const price = Number(medicinePrices[medId]);
+        const total = count * price;
+        totalInput.value = medId ? total.toFixed(2) : 0;
+    });
     $(document).ready(function() {
         const s = $("#addSellMedicineId");
 	    s.select2({
             tags: true,
             dropdownParent: s.parent(),
-            ajax: { url: "/Medicine/GetList/" }
+            ajax: { url: "/Medicine/GetList/" },
+            templateResult: function (d) {
+                medicinePrices[d.id] = d.price;
+                return d.text;
+            }
         });
     });
     $(document).ready(function() {

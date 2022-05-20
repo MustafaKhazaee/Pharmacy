@@ -82,13 +82,27 @@ namespace Infrastructure.Implementations.Services {
             PictureService pictureService = new PictureService();
             string ph = pictureService.SavePicture(buyModel.BuyBill, "buyBills");
             Buy buy = ViewModelToEntity(buyModel, ph);
+            Medicine m = await context.Medicines.FindAsync(buyModel.MedicineId);
+            m.Count += buyModel.Count;
             return (Buy) await AddAsync(buy);
+        }
+
+        public async Task<Buy> SoftDeleteBuyAsync(Guid Id) {
+            Buy buy = await FindAsync(Id);
+            Medicine m = await context.Medicines.FindAsync(buy.MedicineId);
+            m.Count -= buy.Count;
+            await SoftDeleteAsync(Id);
+            return buy;
         }
 
         public async Task<Buy> UpdateBuy(BuyModel buyModel) {
             PictureService pictureService = new PictureService();
             string ph = pictureService.SavePicture(buyModel.BuyBill, "buyBills");
             Buy buy = await FindAsync(buyModel.Id);
+            Medicine m = await context.Medicines.FindAsync(buyModel.MedicineId);
+            if (m.Count - buy.Count + buyModel.Count < 0)
+                return buy;
+            m.Count += -buy.Count + buyModel.Count;
             buy.MedicineId = buyModel.MedicineId;
             buy.CompanyId = buyModel.CompanyId;
             buy.BuyDate = buyModel.BuyDate;

@@ -69,11 +69,29 @@ namespace Infrastructure.Implementations.Services {
         }
         public async Task<Sell> SaveSell(SellModel sellModel) {
             Sell sell = ViewModelToEntity(sellModel);
+            Medicine m = await context.Medicines.FindAsync(sellModel.MedicineId);
+            if (m.Count < sell.Count) {
+                sell.Remarks = "Not enough medicine";
+                return sell;
+            }
+            m.Count -= sell.Count;
             return (Sell) await AddAsync(sell);
+        }
+
+        public async Task<Sell> SoftDeleteSellAsync(Guid Id) {
+            Sell sell = await FindAsync(Id);
+            Medicine m = await context.Medicines.FindAsync(sell.MedicineId);
+            m.Count += sell.Count;
+            await SoftDeleteAsync(Id);
+            return sell;
         }
 
         public async Task<Sell> UpdateSell(SellModel sellModel) {
             Sell sell = await FindAsync(sellModel.Id);
+            Medicine m = await context.Medicines.FindAsync(sellModel.MedicineId);
+            if (sell.Count + m.Count < sellModel.Count)
+                return sell;
+            m.Count += sell.Count - sellModel.Count;
             sell.MedicineId = sellModel.MedicineId;
             sell.CustomerId = sellModel.CustomerId;
             sell.SellDate = sellModel.SellDate;

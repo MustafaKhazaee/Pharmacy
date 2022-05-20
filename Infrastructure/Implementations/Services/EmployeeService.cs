@@ -70,7 +70,7 @@ namespace Infrastructure.Implementations.Services {
 
         public async Task<SelectResult> GetList(string key) {
             List<object> list = new List<object>();
-            (await FindAllAsync(e => e.FirstName.Contains(key) || e.LastName.Contains(key) || key == null, 0, 10))
+            (await FindAllAsync(e => (e.FirstName.Contains(key) || e.LastName.Contains(key) || key == null) && !e.IsDeleted, 0, 50))
                 .ToList().ForEach(e => list.Add(new { id = e.Id, text = $"{e.FirstName} {e.LastName}"}));
             return new SelectResult {
                 results = list

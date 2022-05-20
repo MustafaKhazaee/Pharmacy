@@ -26,7 +26,7 @@ namespace Infrastructure.Implementations.Services {
 
         public async Task<SelectResult> GetList(string key) {
             List<object> list = new List<object>();
-            (await FindAllAsync(e => e.Name.Contains(key) || key == null, 0, 10))
+            (await FindAllAsync(e => (e.Name.Contains(key) || key == null) && !e.IsDeleted, 0, 50)).OrderByDescending(c => c.CreatedDate)
                 .ToList().ForEach(e => list.Add(new { id = e.Id, text = $"{e.Name}" }));
             return new SelectResult {
                 results = list
