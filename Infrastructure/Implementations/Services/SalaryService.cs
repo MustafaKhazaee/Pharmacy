@@ -84,23 +84,3 @@ namespace Infrastructure.Implementations.Services {
         }
     }
 }
-//tableTest = $('#example').DataTable({
-//ajax:
-//    {
-//    url: "/datatables/getSomething",
-//  type: "POST",
-//  data: function(d) {
-//            d.myCustomParams = myCustomParamsValues;
-//        },
-//},
-//serverSide: true,
-//processing: true,
-//columns:
-//    [
-//  { data: 'a'},
-//  { data: 'b'},
-//  { data: 'c'},
-//  { data: 'd'}
-//],
-//responsive: true
-//});

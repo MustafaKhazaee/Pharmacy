@@ -4,6 +4,11 @@
             <h3 class="page-title">فروشات</h3>
         </div>
         <div class="col-auto">
+            <button onclick="$('#sellCart').modal('show')" class="btn btn-primary me-1">
+                <i class="fas fa-archive"></i>
+            </button>
+        </div>
+        <div class="col-auto">
             <button onclick="$('#sellModal').modal('show')" class="btn btn-success me-1">
                 <i class="fas fa-plus"></i>
             </button>
@@ -31,6 +36,90 @@
                         <tbody >
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal custom-modal fade bank-details" id="sellCart" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="form-header text-start mb-0">
+                    <h4 class="mb-0" id="sellModalklHeader">ثبت فروشات</h4>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-inner-details">
+                    <form id="cartForm">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا مشتری را جستجو و انتخاب نمایید:</label>
+                                    <select name="customerId" id="addCartCustomerId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>لطفا ادویه را جستجو و انتخاب نمایید:</label>
+                                    <select name="medicineId" id="addCartMedicineId">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>تاریخ فروش</label>
+                                        <input required id="addCartDate" type="date" name="sellDate" class="form-control" placeholder="تاریخ فروش">
+                                        <div class="valid-feedback">پر شد</div>
+                                        <div class="invalid-feedback">تاریخ فروش نمیتواند خالی باشد!</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>تعداد</label>
+                                        <input required id="addCartCount" type="number" min="0" name="count" class="form-control" placeholder="تعداد">
+                                        <div class="valid-feedback">پر شد</div>
+                                        <div class="invalid-feedback">تعداد نمیتواند خالی باشد!</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>قیمت مجموعی</label>
+                                        <input required id="addCartTotal" type="number" min="0" name="totalPrice" class="form-control" placeholder="قیمت مجموعی">
+                                        <div class="valid-feedback">پر شد</div>
+                                        <div class="invalid-feedback">قیمت مجموعی نمیتواند خالی باشد!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>لیست خرید</label>
+                                    <ol id="listOfCart">
+
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>توضیحات</label>
+                                    <input id="addDescCart" type="text" name="remarks" class="form-control" placeholder="توضیحات">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="bank-details-btn">
+                    <a onclick="clearList()" class="btn btn-danger">حذف لیست</a>
+                    <a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-warning">بستن</a>
+                    <a onclick="addToCart()" class="btn btn-success">ثبت</a>
+                    <a onclick="addCart()" class="btn btn-primary">افزودن به لیست</a>
                 </div>
             </div>
         </div>
@@ -136,11 +225,116 @@
         </div>
     </div>
 </div>
-
 @section Script {
 <script>
     var forgeryToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
-    function addSell () {
+    var cart = [];
+    function clearList () {
+        cart = [];
+        document.querySelector('ol[id="listOfCart"]').innerHTML = "";
+    }
+    async function addCart() {
+        const form = document.querySelector('form[id="cartForm"]');
+        const medId = document.querySelector('select[id="addCartMedicineId"]').selectedOptions[0].value;
+        const cusId = document.querySelector('select[id="addCartCustomerId"]').selectedOptions[0].value;
+        const sellDate = document.querySelector('input[id="addCartDate"]').value;
+        const count = document.querySelector('input[id="addCartCount"]').value;
+        const total = document.querySelector('input[id="addCartTotal"]').value;
+        if (!medId || !cusId || !sellDate || !count || !total) {
+            form.setAttribute('class', 'was-validated');
+        } else if (count == 0) {
+            alertify.error("تعداد نمیتواند خالی باشد");
+        } else if (total == 0) {
+            alertify.error("مجموعه نمیتواند خالی باشد");
+        } else {
+            const d = await fetchAPI.getJSONFromForm(form);
+            const list = document.querySelector('ol[id="listOfCart"]');
+            cart.push(d);
+            document.querySelector('input[id="addCartCount"]').value = 0;
+            document.querySelector('input[id="addCartTotal"]').value = 0;
+            abcd();
+            const listItem = document.createElement('li');
+            const medicine = document.querySelector('select[id="addCartMedicineId"]').selectedOptions[0].innerHTML;
+            listItem.innerHTML = `${medicine} x ${count}`;
+            list.appendChild(listItem);
+            console.log(cart);
+            form.removeAttribute('class', 'was-validated');
+            alertify.success("اضافه شد");
+        }
+    }
+    function addToCart() {
+        console.log(cart)
+        $.ajax({
+            url: "/Sell/SaveCart",
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(cart),
+            headers: {
+                "PharmacyApp-ANTI-FORGERY-TOKEN": forgeryToken
+            },
+            success: function(result) {
+                clearList();
+                k.fnDraw(false);
+                console.log(result);
+                printTable(result);
+            }
+        });
+    }
+    function printTable (data) {
+        const myWindow = window.open('', 'PRINT', 'height=600,width=1000');
+        const head = document.querySelector('head');
+        myWindow.document.write('<html><head>');
+        myWindow.document.write(head.innerHTML);
+        myWindow.document.write(`</head><body style="margin: 10px; padding: 10px; text-align: center;">
+            <h4 style="text-align: center;">فارمسی برادران</h4>
+            <h4 style="text-align: center;">بل خرید ادویه تاریخ ${new Date().toDateString()}</h4>`);
+        myWindow.document.write('<hr>');
+        myWindow.document.write('<table id="billTable" style="width: 100%">');
+        myWindow.document.write('<thead>');
+        myWindow.document.write('<tr>');
+        myWindow.document.write('<th>نام دوا</th>');
+        myWindow.document.write('<th>قیمت</th>');
+        myWindow.document.write('<th>تعداد</th>');
+        myWindow.document.write('<th>قیمت مجموعی</th>');
+        myWindow.document.write('</tr>');
+        myWindow.document.write('</thead>');
+        myWindow.document.write('<tbody>');
+        let c = 0;
+        let printing = true;
+        for (const i of data) {
+            if (i['medicine'] == 'Not enough medicine') {
+                alertify.error("ادویه کافی موجود نیست");
+                printing = false;
+                myWindow.close();
+                break;
+            } else if (i['medicine'] == 'Medicine has expired') {
+                alertify.error(`${i['message']}`);
+                printing = false;
+                myWindow.close();
+                break;
+            }
+            myWindow.document.write('<tr>');
+            myWindow.document.write(`<td>${i['medicine']}</td><td>${i['price']}</td><td>${i['count']}</td><td>${i['totalPrice']}</td>`);
+            myWindow.document.write('</tr>');
+            c += Number(i['totalPrice']);
+        };
+        if (printing == true) {
+            myWindow.document.write('<tr>');
+            myWindow.document.write(`<td></td><td colspan="2">مجموعه بل</td><td>${c.toFixed(2)} افغانی</td>`);
+            myWindow.document.write('</tr>');
+            myWindow.document.write('</tbody>');
+            myWindow.document.write('</table>');
+            myWindow.document.write('<hr>');
+            myWindow.document.write('<h5>توضیحات اضافی بل اینجا نوشته میشود</h5>');
+            myWindow.document.write(`<br>`);
+            myWindow.document.write('</body></html>');
+            setTimeout(() => {
+                myWindow.print();
+            }, 1200);
+        }
+        return true;
+    }
+    async function addSell () {
         const form = document.querySelector('form[id="sellForm"]');
         const medId = document.querySelector('select[id="addSellMedicineId"]').selectedOptions[0].value;
         const cusId = document.querySelector('select[id="addSellCustomerId"]').selectedOptions[0].value;
@@ -151,23 +345,42 @@
         if (!medId || !cusId || !sellDate || !count || !total) {
             form.setAttribute('class', 'was-validated');
         } else {
-            fetchAPI.post("/Sell/AddSell", form, forgeryToken, () => {
+            const d = await fetchAPI.post("/Sell/AddSell", form, forgeryToken, () => {
                 $('#sellModal').modal('hide');
                 form.reset();
                 form[0].innerHTML = "";
                 form[1].innerHTML = "";
                 k.fnDraw(false);
-                alertify.success("ثبت شد");
             });
+            if (d.remarks === 'Not enough medicine') {
+                alertify.error("دوای کافی موجود نیست");
+            } else {
+                alertify.success("اضافه شد");
+            }
         }
     }
-
+    // **********************************
+    const medicinePrices = {};
+    const totalInput = document.querySelector('input[id="addSellTotal"]');
+    const countInput = document.querySelector('input[id="addSellCount"]');
+    const medSelect = document.querySelector('select[id="addSellMedicineId"]');
+    countInput.addEventListener('input', (event) => {
+        const count = Number(event.currentTarget.value);
+        const medId = medSelect.selectedOptions[0].value;
+        const price = Number(medicinePrices[medId]);
+        const total = count * price;
+        totalInput.value = medId ? total.toFixed(2) : 0;
+    });
     $(document).ready(function() {
         const s = $("#addSellMedicineId");
 	    s.select2({
             tags: true,
             dropdownParent: s.parent(),
-            ajax: { url: "/Medicine/GetList/" }
+            ajax: { url: "/Medicine/GetList/" },
+            templateResult: function (d) {
+                medicinePrices[d.id] = d.price;
+                return d.text;
+            }
         });
     });
     $(document).ready(function() {
@@ -178,7 +391,42 @@
             ajax: { url: "/Customer/GetList/" }
         });
     });
-
+    // ***********************************
+    const medicinePrices1 = {};
+    const totalInput1 = document.querySelector('input[id="addCartTotal"]');
+    const countInput1 = document.querySelector('input[id="addCartCount"]');
+    const medSelect1 = document.querySelector('select[id="addCartMedicineId"]');
+    countInput1.addEventListener('input', (event) => {
+        const count = Number(event.currentTarget.value);
+        const medId = medSelect1.selectedOptions[0].value;
+        const price = Number(medicinePrices1[medId]);
+        const total = count * price;
+        totalInput1.value = medId ? total.toFixed(2) : 0;
+    });
+    function abcd() {
+        $(document).ready(function() {
+            const s = $("#addCartMedicineId");
+	        s.select2({
+                tags: true,
+                dropdownParent: s.parent(),
+                ajax: { url: "/Medicine/GetList/" },
+                templateResult: function (d) {
+                    medicinePrices1[d.id] = d.price;
+                    return d.text;
+                }
+            });
+        });
+    }
+    abcd();
+    $(document).ready(function() {
+        const s1 = $("#addCartCustomerId");
+	    s1.select2({
+            tags: true,
+            dropdownParent: s1.parent(),
+            ajax: { url: "/Customer/GetList/" }
+        });
+    });
+    // **********************************
     const k = $('#sellTable').dataTable({
         stateSave: true,
         autoWidth: true,

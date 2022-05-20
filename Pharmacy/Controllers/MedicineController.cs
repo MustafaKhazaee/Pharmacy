@@ -12,7 +12,7 @@ namespace WebUI.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<Medicine> AddMedicine([FromForm] MedicineModel medicine) =>
            await services.MedicineService.SaveMedicine(medicine);
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<DataTableResult<Medicine>> GetMedicineAsync(DataTableParams param) =>

@@ -69,11 +69,72 @@ namespace Infrastructure.Implementations.Services {
         }
         public async Task<Sell> SaveSell(SellModel sellModel) {
             Sell sell = ViewModelToEntity(sellModel);
+            Medicine m = await context.Medicines.FindAsync(sellModel.MedicineId);
+            if (m.Count < sell.Count) {
+                sell.Remarks = "Not enough medicine";
+                return sell;
+            }
+            m.Count -= sell.Count;
             return (Sell) await AddAsync(sell);
+        }
+
+        public async Task<List<Object>> SaveSellCart(List<SellModel> sells) {
+            List<Sell> sellList = new List<Sell>();
+            List<Guid> medicineIds = new List<Guid>();
+            List<Object> result = new List<object>();
+            sells.ForEach(s => {
+                sellList.Add(ViewModelToEntity(s));
+                medicineIds.Add(s.MedicineId);
+            });
+            List<Medicine> list = await Task.FromResult(context.Medicines.Where(m => medicineIds.Contains(m.Id)).ToList());
+            foreach(Medicine i in list) {
+                SellModel s = sells.First(s => s.MedicineId == i.Id);
+                if (i.Count < s.Count) {
+                    result.Add(new {
+                        medicine = "Not enough medicine"
+                    });
+                    return result;
+                } else if (i.RemainingUsableDays < 10) {
+                    int t = i.RemainingUsableDays > 0 ? i.RemainingUsableDays : Math.Abs(i.RemainingUsableDays);
+                    result.Add(new {
+                        medicine = "Medicine has expired",
+                        message = i.RemainingUsableDays > 0 ? $"{i.Name} expires in {t} days" : $"{i.Name} has expired {t} days ago"
+                    });
+                    return result;
+                }
+            };
+            foreach (Medicine i in list) {
+                SellModel s = sells.First(s => s.MedicineId == i.Id);
+                i.Count -= s.Count;
+            }
+            await context.Sells.AddRangeAsync(sellList);
+            await context.SaveChangesAsync();
+            sells.ForEach(i => {
+                Medicine m = list.First(m => m.Id == i.MedicineId);
+                result.Add(new {
+                    medicine = m.Name,
+                    price = m.BuyPrice + m.BuyPrice / 100 * m.SellProfitPercent,
+                    count = i.Count,
+                    totalPrice = i.TotalPrice
+                });
+            });
+            return result;
+        }
+
+        public async Task<Sell> SoftDeleteSellAsync(Guid Id) {
+            Sell sell = await FindAsync(Id);
+            Medicine m = await context.Medicines.FindAsync(sell.MedicineId);
+            m.Count += sell.Count;
+            await SoftDeleteAsync(Id);
+            return sell;
         }
 
         public async Task<Sell> UpdateSell(SellModel sellModel) {
             Sell sell = await FindAsync(sellModel.Id);
+            Medicine m = await context.Medicines.FindAsync(sellModel.MedicineId);
+            if (sell.Count + m.Count < sellModel.Count)
+                return sell;
+            m.Count += sell.Count - sellModel.Count;
             sell.MedicineId = sellModel.MedicineId;
             sell.CustomerId = sellModel.CustomerId;
             sell.SellDate = sellModel.SellDate;

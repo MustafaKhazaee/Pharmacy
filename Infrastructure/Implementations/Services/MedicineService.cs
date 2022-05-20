@@ -52,8 +52,11 @@ namespace Infrastructure.Implementations.Services {
 
         public async Task<SelectResult> GetList(string key) {
             List<object> list = new List<object>();
-            (await FindAllAsync(e => e.Name.Contains(key) || e.Description.Contains(key) || key == null, 0, 10))
-                .ToList().ForEach(e => list.Add(new { id = e.Id, text = $"{e.Name} ({e.Type} {e.Category})" }));
+            (await FindAllAsync(e => (e.Name.Contains(key) || e.Description.Contains(key) || key == null) && !e.IsDeleted, 0, 50))
+                .OrderByDescending(e => e.CreatedDate).ToList().ForEach(e => list.Add(new {
+                    id = e.Id, text = $"{e.Name} ({e.Type} {e.Category}) ({e.BuyPrice + e.BuyPrice / 100 * e.SellProfitPercent})",
+                    price = e.BuyPrice + e.BuyPrice / 100 * e.SellProfitPercent
+                }));
             return new SelectResult {
                 results = list
             };

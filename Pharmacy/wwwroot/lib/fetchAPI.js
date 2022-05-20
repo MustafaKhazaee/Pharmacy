@@ -108,7 +108,6 @@
                     a[input.name] = "null";
             }
         }
-        console.log(a);
         return a;
     }
 

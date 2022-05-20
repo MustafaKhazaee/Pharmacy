@@ -1,12 +1,11 @@
-﻿
-using Application.Extensions;
+﻿using Application.Extensions;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence {
     public class ApplicationDbContext : DbContext {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options) : base (options) { }
         public virtual DbSet<Buy> Buys { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }

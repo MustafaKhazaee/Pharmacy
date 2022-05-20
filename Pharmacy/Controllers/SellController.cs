@@ -10,6 +10,11 @@ namespace WebUI.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<Object> SaveCart([FromBody] List<SellModel> sells) =>
+           await services.SellService.SaveSellCart(sells);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<Sell> AddSell([FromForm] SellModel sellModel) =>
             await services.SellService.SaveSell(sellModel);
 
@@ -20,7 +25,11 @@ namespace WebUI.Controllers {
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
-        public async Task<Sell> DeleteSell(Guid id) => await services.SellService.SoftDeleteAsync(id);
+        public async Task<Sell> DeleteSell(Guid id) => await services.SellService.SoftDeleteSellAsync(id);
+
+        [HttpGet]
+        public async Task<IActionResult> GetUpdateModal(Guid id) =>
+            await Task.FromResult(PartialView("UpdateSell", await services.SellService.FindAsync(id)));
 
         [HttpGet]
         public async Task<IActionResult> PrintBill(Guid id) => 
