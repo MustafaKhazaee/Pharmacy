@@ -3,9 +3,11 @@ using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistence {
-    public class ApplicationDbContext : DbContext {
-        public ApplicationDbContext (DbContextOptions<ApplicationDbContext> options) : base (options) { }
+namespace Persistence
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public virtual DbSet<Buy> Buys { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -14,8 +16,10 @@ namespace Persistence {
         public virtual DbSet<Salary> Salaries { get; set; }
         public virtual DbSet<Sell> Sells { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseLazyLoadingProxies();
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             string salt = "".GetSalt();
             List<User> defaultUser = new List<User> {
                 new User {

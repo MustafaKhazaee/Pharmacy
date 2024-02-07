@@ -1,7 +1,7 @@
 ﻿class FetchAPI {
 
     async getJSON(url, key, callBack) {
-        const newURL = url + `?key=${key}`;
+        const newURL = `${url}?key=${key}`;
         return await fetch(newURL, {
             method: "get",
         })
@@ -14,6 +14,15 @@
         .then(data => data).catch(error => console.error(error));
     }
 
+    async getById(url, id) {
+        url = `${url}?id=${id}`;
+        return await fetch(url, {
+            method: "get",
+        })
+        .then(response => response.text())
+        .then(data => data).catch(error => console.error(error));
+    }
+
     async get(url) {
         return await fetch(url, {
             method: "get",
@@ -23,7 +32,7 @@
     }
 
     async getUpdateModal(url, id, callBack) {
-        url = url + `?id=${id}`;
+        url = `${url}?id=${id}`;
         return await fetch(url, {
             method: "get",
         }).then(response => {
@@ -70,8 +79,7 @@
         const a = new FormData();
         for (let i = 0; i < form.length; i++) {
             const input = form[i];
-            if (input.type.toString() === 'text' || input.type.toString() === 'password' || input.type.toString() === 'date' ||
-                input.type.toString() === 'number') {
+            if (input.type.toString() === 'text' || input.type.toString() === 'password' || input.type.toString() === 'date' || input.type.toString() === 'number') {
                 a.append(input.name, input.value);
             } else if (input.type.toString() === 'file') {
                 a.append(input.name, input.files[0]);
@@ -94,9 +102,6 @@
             if (input.type.toString() === 'text' || input.type.toString() === 'password' || input.type.toString() === 'date' ||
                 input.type.toString() === 'number') {
                 a[input.name] = input.value;
-                console.log("--------------------------");
-                console.log(input.name);
-                console.log(input.value);
             } else if (input.type.toString() === 'file') {
                 a[input.name] = input.files[0];
             } else if (input.type.toString() === 'checkbox') {
@@ -112,7 +117,7 @@
     }
 
     async delete(url, id, forgeryToken, callBack) {
-        url = url + `?id=${id}`;
+        url = `${url}?id=${id}`;
         await fetch(url, {
             method: "DELETE",
             headers: {

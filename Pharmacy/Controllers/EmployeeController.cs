@@ -17,7 +17,7 @@ namespace WebUI.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<DataTableResult<Employee>> GetEmployeesAsync(DataTableParams param) =>
-            await services.EmployeeService.GetEmployeePage(param);
+                await services.EmployeeService.GetEmployeePage(param);
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
