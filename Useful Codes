@@ -22,3 +22,5 @@ Security Headers Reported By ZAP:
      );
      await next();
  });
+
+        builder.Services.AddAntiforgery(a => a.HeaderName = "X-CSRF-Token");
